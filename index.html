@@ -19,6 +19,40 @@
             min-height: 100vh;
             padding: 20px;
         }
+        /* Верхняя панель с аккаунтом */
+        .user-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1e1e1e;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2c2c2c;
+            z-index: 100;
+            font-size: 14px;
+        }
+        .user-email {
+            color: #FFD54F;
+            font-weight: bold;
+        }
+        .logout-top {
+            background: #333;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .logout-top:hover {
+            background: #444;
+        }
+        body {
+            padding-top: 70px;
+        }
         .login-screen {
             background: #1e1e1e;
             border-radius: 28px;
@@ -27,6 +61,7 @@
             text-align: center;
             box-shadow: 0 20px 35px rgba(0,0,0,0.5);
             border: 1px solid #2c2c2c;
+            margin-top: 60px;
         }
         .login-screen .logo {
             font-size: 56px;
@@ -120,21 +155,12 @@
             color: transparent;
             font-weight: bold;
         }
-        .logout-btn {
-            background: #333;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 40px;
-            color: white;
-            cursor: pointer;
-            font-size: 13px;
-        }
         .feed {
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            max-height: 65vh;
+            max-height: 70vh;
             overflow-y: auto;
             flex: 1;
         }
@@ -212,7 +238,7 @@
             padding: 40px;
         }
         .chat-list {
-            max-height: 35vh;
+            max-height: 30vh;
             overflow-y: auto;
             border-bottom: 1px solid #2c2c2c;
         }
@@ -249,12 +275,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 45vh;
+            max-height: 50vh;
         }
         .message-mine {
             align-self: flex-end;
-            background: #FFB300;
-            color: #1e1e1e;
+            background: #FFB30020;
+            border: 1px solid #FFB300;
+            color: #eee;
             border-radius: 18px 18px 4px 18px;
             padding: 8px 12px;
             max-width: 80%;
@@ -262,7 +289,7 @@
         .message-other {
             align-self: flex-start;
             background: #2c2c2c;
-            color: white;
+            color: #eee;
             border-radius: 18px 18px 18px 4px;
             padding: 8px 12px;
             max-width: 80%;
@@ -297,6 +324,7 @@
             padding: 0 18px;
             cursor: pointer;
             font-weight: bold;
+            color: #1e1e1e;
         }
         .create-chat {
             padding: 10px 16px;
@@ -321,6 +349,8 @@
             padding: 0 16px;
             cursor: pointer;
             font-weight: bold;
+            color: #1e1e1e;
+            font-size: 18px;
         }
         .floating-x {
             position: fixed;
@@ -339,6 +369,12 @@
     </style>
 </head>
 <body>
+    <!-- Верхняя панель с аккаунтом -->
+    <div id="user-bar" class="user-bar" style="display: none;">
+        <div>👤 <span id="user-email-display" class="user-email"></span></div>
+        <button id="logout-top" class="logout-top">Выйти</button>
+    </div>
+
     <!-- Экран входа -->
     <div id="login-screen" class="login-screen">
         <div class="logo">🥞</div>
@@ -356,7 +392,6 @@
             <div class="feed-column">
                 <div class="header">
                     <div class="logo-header">🔥 <span>Жареная лента</span></div>
-                    <button id="logout-btn" class="logout-btn">Выйти</button>
                 </div>
                 <div id="feed" class="feed"></div>
                 <div class="new-post">
@@ -412,6 +447,9 @@
     const postsRef = collection(db, "fried_feed");
 
     // DOM элементы
+    const userBar = document.getElementById('user-bar');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const logoutTop = document.getElementById('logout-top');
     const loginScreen = document.getElementById('login-screen');
     const appDiv = document.getElementById('app');
     const loginEmail = document.getElementById('login-email');
@@ -423,7 +461,6 @@
     const feedDiv = document.getElementById('feed');
     const postInput = document.getElementById('post-text');
     const sendPostBtn = document.getElementById('send-post');
-    const logoutBtn = document.getElementById('logout-btn');
     const chatListDiv = document.getElementById('chat-list');
     const chatArea = document.getElementById('chat-area');
     const noChatDiv = document.getElementById('no-chat-selected');
@@ -564,6 +601,7 @@
 
     async function createChatIfNotExists(otherEmail) {
         if (otherEmail === currentUser.email) {
+            showLoginError("Нельзя создать чат с самим собой");
             return null;
         }
         const chatId = getChatId(currentUser.email, otherEmail);
@@ -730,17 +768,19 @@
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
+            userEmailDisplay.innerText = currentUser.email;
+            userBar.style.display = 'flex';
             loginScreen.style.display = 'none';
             appDiv.style.display = 'block';
             await setDoc(doc(db, "users", user.uid), { email: user.email, uid: user.uid }, { merge: true });
             subscribeToFeed();
             subscribeToChats();
         } else {
-            // Пользователь не залогинен — показываем экран входа
             currentUser = null;
             if (unsubscribeFeed) unsubscribeFeed();
             if (unsubscribeChats) unsubscribeChats();
             if (unsubscribeMessages) unsubscribeMessages();
+            userBar.style.display = 'none';
             loginScreen.style.display = 'block';
             appDiv.style.display = 'none';
             loginEmail.value = '';
@@ -754,7 +794,7 @@
     sendMessageBtn.addEventListener('click', () => sendMessage(messageInput.value));
     messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(messageInput.value); });
     createChatBtn.addEventListener('click', createNewChat);
-    logoutBtn.addEventListener('click', () => signOut(auth));
+    logoutTop.addEventListener('click', () => signOut(auth));
 </script>
 </body>
 </html>

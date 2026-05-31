@@ -21,7 +21,6 @@
             padding: 20px;
         }
 
-        /* Экран входа */
         .login-screen {
             background: #1e1e1e;
             border-radius: 28px;
@@ -94,7 +93,6 @@
             font-size: 13px;
         }
 
-        /* Discord-подобный интерфейс */
         .main-container {
             width: 100%;
             max-width: 1400px;
@@ -107,7 +105,6 @@
             border: 1px solid #2c2c2c;
         }
 
-        /* Левая панель с кнопками */
         .sidebar-nav {
             width: 72px;
             background: #151515;
@@ -142,11 +139,6 @@
             background: #3a3a3a;
         }
 
-        .logout-side {
-            margin-top: auto;
-        }
-
-        /* Правая область — контент */
         .content-area {
             flex: 1;
             display: flex;
@@ -154,7 +146,6 @@
             overflow: hidden;
         }
 
-        /* Верхняя панель с аккаунтом */
         .user-bar {
             padding: 12px 20px;
             display: flex;
@@ -179,11 +170,7 @@
             font-size: 13px;
         }
 
-        .logout-user:hover {
-            background: #444;
-        }
-
-        /* Жареная лента */
+        /* Жареная лента — новый стиль */
         .feed-section {
             flex: 1;
             display: flex;
@@ -205,66 +192,108 @@
         .feed-list {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
         .post-card {
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 14px;
-            border-left: 4px solid #FFB300;
+            background: #1e1e1e;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #2c2c2c;
         }
 
         .post-header {
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 12px;
-            color: #bbb;
-        }
-
-        .post-author {
-            font-weight: bold;
-            color: #FFD54F;
-        }
-
-        .post-text {
-            font-size: 15px;
-            margin: 10px 0;
-            word-break: break-word;
-            color: #eee;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 12px;
             align-items: center;
         }
 
-        .fire-btn {
+        .post-author-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .post-name {
+            font-weight: bold;
+            color: #eee;
+        }
+
+        .post-date {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .post-menu {
             background: none;
             border: none;
-            font-size: 20px;
+            color: #888;
             cursor: pointer;
-            filter: grayscale(0.3);
+            font-size: 18px;
         }
 
-        .fire-count {
+        .post-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            background: #0a0a0a;
+        }
+
+        .post-stats {
+            padding: 10px 16px;
+            display: flex;
+            gap: 16px;
+            border-top: 1px solid #2c2c2c;
             font-size: 13px;
-            color: #ffb74d;
-            margin-left: 3px;
+            color: #888;
         }
 
-        .timer {
-            font-size: 11px;
-            color: #ff8c00;
+        .post-actions-feed {
+            padding: 8px 16px 12px;
+            display: flex;
+            gap: 24px;
+            border-top: 1px solid #2c2c2c;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #aaa;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: 0.1s;
+        }
+
+        .action-btn:hover {
+            background: #2a2a2a;
+        }
+
+        .fire-action {
+            color: #FFB300;
         }
 
         .new-post {
-            padding: 16px 20px;
+            padding: 12px 16px;
             border-top: 1px solid #2c2c2c;
             display: flex;
             gap: 10px;
@@ -474,32 +503,16 @@
         }
 
         @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(0.8);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5);
-            }
+            0% { opacity: 1; transform: translate(0, 0) scale(0.8); }
+            100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); }
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1e1e1e;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e1e1e; }
+        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <!-- Экран входа -->
     <div id="login-screen" class="login-screen">
         <div class="logo">🥞</div>
         <h1>Blin</h1>
@@ -510,25 +523,18 @@
         <div id="login-error" style="display: none;" class="error"></div>
     </div>
 
-    <!-- Discord-подобный интерфейс -->
     <div id="main-container" class="main-container" style="display: none;">
-        <!-- Левая панель с кнопками -->
         <div class="sidebar-nav">
             <button id="nav-feed-btn" class="nav-btn active">🔥</button>
             <button id="nav-chats-btn" class="nav-btn">💬</button>
-            <div style="flex:1"></div>
-            <button id="logout-side" class="nav-btn logout-side">🚪</button>
         </div>
 
-        <!-- Правая область контента -->
         <div class="content-area">
-            <!-- Верхняя панель с аккаунтом -->
             <div class="user-bar">
                 <div>👤 <span id="user-email-display" class="user-email"></span></div>
                 <button id="logout-user" class="logout-user">Выйти</button>
             </div>
 
-            <!-- Жареная лента (показывается по умолчанию) -->
             <div id="feed-section" class="feed-section">
                 <div class="feed-header">🔥 Жареная лента</div>
                 <div id="feed-list" class="feed-list"></div>
@@ -538,7 +544,6 @@
                 </div>
             </div>
 
-            <!-- Чаты (скрыто по умолчанию) -->
             <div id="chats-section" class="chats-section" style="display: none;">
                 <div class="chats-header">💬 Чаты</div>
                 <div class="chats-layout">
@@ -585,7 +590,6 @@
         const db = getFirestore(app);
         const postsRef = collection(db, "fried_feed");
 
-        // DOM элементы
         const loginScreen = document.getElementById('login-screen');
         const mainContainer = document.getElementById('main-container');
         const loginEmail = document.getElementById('login-email');
@@ -599,7 +603,6 @@
         const navChatsBtn = document.getElementById('nav-chats-btn');
         const feedSection = document.getElementById('feed-section');
         const chatsSection = document.getElementById('chats-section');
-        const logoutSide = document.getElementById('logout-side');
         const logoutUser = document.getElementById('logout-user');
         
         const feedList = document.getElementById('feed-list');
@@ -684,44 +687,66 @@
 
         function subscribeToFeed() {
             if (unsubscribeFeed) unsubscribeFeed();
-            const q = query(postsRef, orderBy("expiresAt", "asc"));
+            const q = query(postsRef, orderBy("createdAt", "desc"));
             unsubscribeFeed = onSnapshot(q, (snapshot) => {
-                const activePosts = [];
+                const posts = [];
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const expiresAt = data.expiresAt;
                     if (expiresAt && expiresAt.toMillis() > Timestamp.now().toMillis()) {
-                        activePosts.push({ id: docSnap.id, ...data });
+                        posts.push({ id: docSnap.id, ...data });
                     } else if (expiresAt) {
                         deleteDoc(doc(db, "fried_feed", docSnap.id));
                     }
                 });
-                renderFeed(activePosts);
+                renderFeed(posts);
             });
+        }
+
+        function getRandomAvatar() {
+            const avatars = ['😈', '🔥', '🥞', '💀', '👻', '🤡', '🦎', '🐻', '🐼', '🐧', '🐙', '🦄'];
+            return avatars[Math.floor(Math.random() * avatars.length)];
         }
 
         function renderFeed(posts) {
             if (!feedList) return;
             if (posts.length === 0) {
-                feedList.innerHTML = '<div class="empty">Здесь ничего...</div>';
+                feedList.innerHTML = '<div class="empty">🔥 Здесь пока ничего нет. Напиши первый пост!</div>';
                 return;
             }
-            posts.sort((a, b) => (b.extendCount || 0) - (a.extendCount || 0));
-            feedList.innerHTML = posts.map(post => `
-                <div class="post-card">
-                    <div class="post-header">
-                        <span class="post-author">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</span>
-                        <span class="timer">⏳ ${getTimeLeft(post.expiresAt)}</span>
+            feedList.innerHTML = posts.map(post => {
+                const avatar = getRandomAvatar();
+                const date = post.createdAt ? new Date(post.createdAt.toMillis()).toLocaleString() : 'только что';
+                return `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-author-info">
+                                <div class="post-avatar">${avatar}</div>
+                                <div>
+                                    <div class="post-name">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div>
+                                    <div class="post-date">${date}</div>
+                                </div>
+                            </div>
+                            <button class="post-menu">⋯</button>
+                        </div>
+                        <div class="post-text" style="padding: 0 16px 12px;">${escapeHtml(post.text)}</div>
+                        <div class="post-stats">
+                            <span>🔥 ${post.extendCount || 0} нагревов</span>
+                            <span>💬 0</span>
+                            <span>👁️ ${Math.floor(Math.random() * 1000)}</span>
+                        </div>
+                        <div class="post-actions-feed">
+                            <button class="action-btn fire-action" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>
+                                🔥 <span>Поджарить</span>
+                            </button>
+                            <button class="action-btn">💬 Комментировать</button>
+                            <button class="action-btn">🔄 Репост</button>
+                        </div>
                     </div>
-                    <div class="post-text">${escapeHtml(post.text)}</div>
-                    <div class="post-actions">
-                        <button class="fire-btn" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>
-                            🔥 <span class="fire-count">${post.extendCount || 0}</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            document.querySelectorAll('.fire-btn').forEach(btn => {
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.fire-action').forEach(btn => {
                 btn.addEventListener('click', async (event) => {
                     event.stopPropagation();
                     const postId = btn.dataset.id;
@@ -744,11 +769,8 @@
             return a < b ? `${a}_${b}` : `${b}_${a}`;
         }
 
-        async function createChatIfNotExists(otherEmail) {
-            if (otherEmail === currentUser.email) {
-                showLoginError("Нельзя создать чат с самим собой");
-                return null;
-            }
+        async function getOrCreateChat(otherEmail) {
+            if (otherEmail === currentUser.email) return null;
             const chatId = getChatId(currentUser.email, otherEmail);
             const chatRef = doc(db, "chats", chatId);
             const chatSnap = await getDoc(chatRef);
@@ -779,7 +801,7 @@
         function renderChatList(chats) {
             if (!chatListScroll) return;
             if (chats.length === 0) {
-                chatListScroll.innerHTML = '<div class="empty" style="padding:20px;">Нет чатов</div>';
+                chatListScroll.innerHTML = '<div class="empty">Нет чатов</div>';
                 return;
             }
             chatListScroll.innerHTML = chats.map(chat => {
@@ -862,7 +884,7 @@
         async function createNewChat() {
             const otherEmail = newChatEmailInput.value.trim();
             if (!otherEmail) return;
-            const chatId = await createChatIfNotExists(otherEmail);
+            const chatId = await getOrCreateChat(otherEmail);
             if (chatId) {
                 newChatEmailInput.value = '';
                 subscribeToChats();
@@ -928,7 +950,6 @@
             }
         });
 
-        // Навигация между разделами
         navFeedBtn.addEventListener('click', () => {
             navFeedBtn.classList.add('active');
             navChatsBtn.classList.remove('active');
@@ -948,7 +969,6 @@
         sendMessageBtn.addEventListener('click', () => sendMessage(messageInput.value));
         messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(messageInput.value); });
         createChatBtn.addEventListener('click', createNewChat);
-        logoutSide.addEventListener('click', () => signOut(auth));
         logoutUser.addEventListener('click', () => signOut(auth));
     </script>
 </body>

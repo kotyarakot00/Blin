@@ -5,511 +5,75 @@
     <title>Blin — мессенджер</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #121212;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-screen {
-            background: #1e1e1e;
-            border-radius: 28px;
-            padding: 40px;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
-            border: 1px solid #2c2c2c;
-        }
-
-        .login-screen .logo {
-            font-size: 56px;
-            margin-bottom: 16px;
-        }
-
-        .login-screen h1 {
-            font-size: 32px;
-            background: linear-gradient(135deg, #FFD54F, #FFB300);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 24px;
-        }
-
-        .login-screen input {
-            width: 100%;
-            padding: 14px;
-            margin: 8px 0;
-            background: #2c2c2c;
-            border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .login-screen input:focus {
-            background: #333;
-            box-shadow: 0 0 0 2px #FFB300;
-        }
-
-        .login-screen button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 16px;
-            background: #FFB300;
-            border: none;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #1e1e1e;
-            font-size: 16px;
-        }
-
-        .login-screen .toggle {
-            margin-top: 16px;
-            color: #aaa;
-            cursor: pointer;
-        }
-
-        .login-screen .toggle span {
-            color: #FFB300;
-        }
-
-        .error {
-            background: #c62828;
-            padding: 10px;
-            border-radius: 16px;
-            margin-top: 16px;
-            font-size: 13px;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            height: 85vh;
-            display: flex;
-            background: #1e1e1e;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
-            border: 1px solid #2c2c2c;
-        }
-
-        .sidebar-nav {
-            width: 72px;
-            background: #151515;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 20px 0;
-            border-right: 1px solid #2c2c2c;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nav-btn.active {
-            background: #FFB300;
-            color: #1e1e1e;
-        }
-
-        .nav-btn:hover {
-            background: #3a3a3a;
-        }
-
-        .content-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .user-bar {
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2c2c2c;
-            background: #1e1e1e;
-        }
-
-        .user-email {
-            color: #FFD54F;
-            font-weight: bold;
-        }
-
-        .logout-user {
-            background: #333;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 40px;
-            color: white;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .feed-section, .chats-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .feed-header, .chats-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid #2c2c2c;
-            font-size: 20px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FFD54F, #FFB300);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .feed-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .post-card {
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 16px;
-            border-left: 4px solid #FFB300;
-            position: relative;
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .post-author {
-            font-weight: bold;
-            color: #FFD54F;
-            font-size: 14px;
-        }
-
-        .post-date {
-            font-size: 11px;
-            color: #888;
-            margin-top: 2px;
-        }
-
-        .post-text {
-            font-size: 15px;
-            color: #eee;
-            margin: 12px 0;
-            word-break: break-word;
-            line-height: 1.4;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .fire-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            filter: grayscale(0.3);
-            transition: 0.1s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .fire-btn:hover {
-            transform: scale(1.05);
-            filter: grayscale(0);
-        }
-
-        .fire-count {
-            font-size: 13px;
-            color: #ffb74d;
-        }
-
-        .timer {
-            font-size: 11px;
-            color: #ff8c00;
-        }
-
-        .post-menu-btn {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-        }
-
-        .post-menu-btn:hover {
-            background: #3a3a3a;
-            color: white;
-        }
-
-        .new-post {
-            padding: 12px 16px;
-            border-top: 1px solid #2c2c2c;
-            display: flex;
-            gap: 10px;
-        }
-
-        .new-post input {
-            flex: 1;
-            padding: 10px;
-            background: #2c2c2c;
-            border: none;
-            border-radius: 40px;
-            color: white;
-            outline: none;
-        }
-
-        .new-post input:focus {
-            background: #333;
-            box-shadow: 0 0 0 2px #FFB300;
-        }
-
-        .new-post button {
-            background: #FFB300;
-            border: none;
-            padding: 0 18px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #1e1e1e;
-        }
-
-        .chats-layout {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .chat-list-side {
-            width: 280px;
-            border-right: 1px solid #2c2c2c;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .create-chat {
-            padding: 12px;
-            border-bottom: 1px solid #2c2c2c;
-            display: flex;
-            gap: 8px;
-        }
-
-        .create-chat input {
-            flex: 1;
-            background: #2c2c2c;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 12px;
-            color: white;
-            outline: none;
-        }
-
-        .create-chat input:focus {
-            background: #333;
-            box-shadow: 0 0 0 2px #FFB300;
-        }
-
-        .create-chat button {
-            background: #FFB300;
-            border: none;
-            border-radius: 40px;
-            padding: 0 16px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #1e1e1e;
-            font-size: 18px;
-        }
-
-        .chat-list-scroll {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .chat-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #2c2c2c;
-        }
-
-        .chat-item:hover {
-            background: #2a2a2a;
-        }
-
-        .chat-item.active {
-            background: #2a2a2a;
-            border-left: 3px solid #FFB300;
-        }
-
-        .chat-name {
-            font-weight: 500;
-            color: #eee;
-        }
-
-        .chat-last-msg {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .chat-messages-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages-header {
-            padding: 12px 16px;
-            background: #252525;
-            border-bottom: 1px solid #2c2c2c;
-            font-weight: bold;
-            color: #eee;
-        }
-
-        .messages-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .message-mine {
-            align-self: flex-end;
-            background: #FFB30020;
-            border: 1px solid #FFB300;
-            color: #eee;
-            border-radius: 18px 18px 4px 18px;
-            padding: 8px 12px;
-            max-width: 80%;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .message-mine:hover {
-            background: #FFB30030;
-        }
-
-        .message-other {
-            align-self: flex-start;
-            background: #2c2c2c;
-            color: #eee;
-            border-radius: 18px 18px 18px 4px;
-            padding: 8px 12px;
-            max-width: 80%;
-        }
-
-        .message-text {
-            font-size: 14px;
-        }
-
-        .message-time {
-            font-size: 10px;
-            margin-top: 4px;
-            opacity: 0.7;
-        }
-
-        .new-message {
-            padding: 12px;
-            border-top: 1px solid #2c2c2c;
-            display: flex;
-            gap: 10px;
-        }
-
-        .new-message input {
-            flex: 1;
-            padding: 10px;
-            background: #2c2c2c;
-            border: none;
-            border-radius: 40px;
-            color: white;
-            outline: none;
-        }
-
-        .new-message input:focus {
-            background: #333;
-            box-shadow: 0 0 0 2px #FFB300;
-        }
-
-        .new-message button {
-            background: #FFB300;
-            border: none;
-            border-radius: 40px;
-            padding: 0 18px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #1e1e1e;
-        }
-
-        .empty {
-            text-align: center;
-            color: #aaa;
-            padding: 40px;
-        }
-
-        .floating-x {
-            position: fixed;
-            pointer-events: none;
-            font-size: 22px;
-            z-index: 1000;
-            animation: floatUp 0.6s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translate(0, 0) scale(0.8); }
-            100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); }
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1e1e1e;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 4px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #121212; font-family: system-ui, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .login-screen { background: #1e1e1e; border-radius: 28px; padding: 40px; width: 400px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.5); border: 1px solid #2c2c2c; }
+        .login-screen .logo { font-size: 56px; margin-bottom: 16px; }
+        .login-screen h1 { font-size: 32px; background: linear-gradient(135deg, #FFD54F, #FFB300); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; }
+        .login-screen input { width: 100%; padding: 14px; margin: 8px 0; background: #2c2c2c; border: none; border-radius: 16px; color: white; font-size: 15px; outline: none; }
+        .login-screen input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .login-screen button { width: 100%; padding: 14px; margin-top: 16px; background: #FFB300; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; font-size: 16px; }
+        .login-screen .toggle { margin-top: 16px; color: #aaa; cursor: pointer; }
+        .login-screen .toggle span { color: #FFB300; }
+        .error { background: #c62828; padding: 10px; border-radius: 16px; margin-top: 16px; font-size: 13px; }
+        .main-container { width: 100%; max-width: 1200px; height: 85vh; display: flex; background: #1e1e1e; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 35px rgba(0,0,0,0.5); border: 1px solid #2c2c2c; }
+        .sidebar-nav { width: 72px; background: #151515; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px 0; border-right: 1px solid #2c2c2c; }
+        .nav-btn { width: 48px; height: 48px; border-radius: 50%; background: #2a2a2a; border: none; font-size: 24px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .nav-btn.active { background: #FFB300; color: #1e1e1e; }
+        .nav-btn:hover { background: #3a3a3a; }
+        .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .user-bar { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2c2c2c; background: #1e1e1e; }
+        .user-email { color: #FFD54F; font-weight: bold; }
+        .logout-user { background: #333; border: none; padding: 6px 14px; border-radius: 40px; color: white; cursor: pointer; font-size: 13px; }
+        .feed-section, .chats-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .feed-header, .chats-header { padding: 16px 20px; border-bottom: 1px solid #2c2c2c; font-size: 20px; font-weight: bold; background: linear-gradient(135deg, #FFD54F, #FFB300); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .feed-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+        .post-card { background: #2a2a2a; border-radius: 20px; padding: 16px; border-left: 4px solid #FFB300; position: relative; }
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .post-author { font-weight: bold; color: #FFD54F; font-size: 14px; }
+        .post-date { font-size: 11px; color: #888; margin-top: 2px; }
+        .post-text { font-size: 15px; color: #eee; margin: 12px 0; word-break: break-word; line-height: 1.4; }
+        .post-actions { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+        .fire-btn { background: none; border: none; font-size: 20px; cursor: pointer; filter: grayscale(0.3); transition: 0.1s; display: flex; align-items: center; gap: 4px; }
+        .fire-btn:hover { transform: scale(1.05); filter: grayscale(0); }
+        .fire-count { font-size: 13px; color: #ffb74d; }
+        .timer { font-size: 11px; color: #ff8c00; }
+        .post-menu-btn { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+        .post-menu-btn:hover { background: #3a3a3a; color: white; }
+        .new-post { padding: 12px 16px; border-top: 1px solid #2c2c2c; display: flex; gap: 10px; }
+        .new-post input { flex: 1; padding: 10px; background: #2c2c2c; border: none; border-radius: 40px; color: white; outline: none; }
+        .new-post input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .new-post button { background: #FFB300; border: none; padding: 0 18px; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; }
+        .chats-layout { flex: 1; display: flex; overflow: hidden; }
+        .chat-list-side { width: 280px; border-right: 1px solid #2c2c2c; display: flex; flex-direction: column; }
+        .create-chat { padding: 12px; border-bottom: 1px solid #2c2c2c; display: flex; gap: 8px; }
+        .create-chat input { flex: 1; background: #2c2c2c; border: none; border-radius: 40px; padding: 8px 12px; color: white; outline: none; }
+        .create-chat input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .create-chat button { background: #FFB300; border: none; border-radius: 40px; padding: 0 16px; cursor: pointer; font-weight: bold; color: #1e1e1e; font-size: 18px; }
+        .chat-list-scroll { flex: 1; overflow-y: auto; }
+        .chat-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #2c2c2c; }
+        .chat-item:hover { background: #2a2a2a; }
+        .chat-item.active { background: #2a2a2a; border-left: 3px solid #FFB300; }
+        .chat-name { font-weight: 500; color: #eee; }
+        .chat-last-msg { font-size: 12px; color: #888; }
+        .chat-messages-area { flex: 1; display: flex; flex-direction: column; }
+        .chat-messages-header { padding: 12px 16px; background: #252525; border-bottom: 1px solid #2c2c2c; font-weight: bold; color: #eee; }
+        .messages-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+        .message-mine { align-self: flex-end; background: #FFB30020; border: 1px solid #FFB300; color: #eee; border-radius: 18px 18px 4px 18px; padding: 8px 12px; max-width: 80%; cursor: pointer; transition: 0.1s; }
+        .message-mine:hover { background: #FFB30030; }
+        .message-other { align-self: flex-start; background: #2c2c2c; color: #eee; border-radius: 18px 18px 18px 4px; padding: 8px 12px; max-width: 80%; }
+        .message-text { font-size: 14px; }
+        .message-time { font-size: 10px; margin-top: 4px; opacity: 0.7; }
+        .new-message { padding: 12px; border-top: 1px solid #2c2c2c; display: flex; gap: 10px; }
+        .new-message input { flex: 1; padding: 10px; background: #2c2c2c; border: none; border-radius: 40px; color: white; outline: none; }
+        .new-message input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .new-message button { background: #FFB300; border: none; border-radius: 40px; padding: 0 18px; cursor: pointer; font-weight: bold; color: #1e1e1e; }
+        .empty { text-align: center; color: #aaa; padding: 40px; }
+        .floating-x { position: fixed; pointer-events: none; font-size: 22px; z-index: 1000; animation: floatUp 0.6s ease-out forwards; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translate(0, 0) scale(0.8); } 100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e1e1e; }
+        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -627,30 +191,17 @@
         let currentChatId = null;
         let isLoginMode = true;
 
-        function saveLastChatId(chatId) {
-            if (chatId) localStorage.setItem('blin_last_chat', chatId);
-            else localStorage.removeItem('blin_last_chat');
-        }
+        function saveLastChatId(chatId) { if (chatId) localStorage.setItem('blin_last_chat', chatId); else localStorage.removeItem('blin_last_chat'); }
+        function getLastChatId() { return localStorage.getItem('blin_last_chat'); }
 
-        function getLastChatId() {
-            return localStorage.getItem('blin_last_chat');
-        }
-
-        function showLoginError(text) {
-            loginError.innerText = text;
-            loginError.style.display = 'block';
-            setTimeout(() => loginError.style.display = 'none', 4000);
-        }
+        function showLoginError(text) { loginError.innerText = text; loginError.style.display = 'block'; setTimeout(() => loginError.style.display = 'none', 4000); }
 
         function showFloatingX(event) {
-            const x = event.clientX;
-            const y = event.clientY;
+            const x = event.clientX, y = event.clientY;
             const div = document.createElement('div');
-            div.className = 'floating-x';
-            div.innerText = '❌';
+            div.className = 'floating-x'; div.innerText = '❌';
             div.style.setProperty('--x', ((Math.random() - 0.5) * 40) + 'px');
-            div.style.left = (x - 12) + 'px';
-            div.style.top = (y - 12) + 'px';
+            div.style.left = (x - 12) + 'px'; div.style.top = (y - 12) + 'px';
             document.body.appendChild(div);
             setTimeout(() => div.remove(), 600);
         }
@@ -665,11 +216,7 @@
             return `${minutes}м`;
         }
 
-        // ========== ЖАРЕНАЯ ЛЕНТА ==========
-        async function deletePost(postId) {
-            if (!currentUser) return;
-            await deleteDoc(doc(db, "fried_feed", postId));
-        }
+        async function deletePost(postId) { if (!currentUser) return; await deleteDoc(doc(db, "fried_feed", postId)); }
 
         async function extendPost(postId, currentExpiresAt, currentExtendCount, extendedByUsers) {
             if (!currentUser) return false;
@@ -678,26 +225,14 @@
             let newCount = (currentExtendCount || 0) + 1;
             if (newCount > 96) return false;
             newExpires = new Timestamp(newExpires.seconds + 900, newExpires.nanoseconds);
-            await updateDoc(doc(db, "fried_feed", postId), {
-                expiresAt: newExpires,
-                extendCount: newCount,
-                extendedByUsers: arrayUnion(currentUser.uid)
-            });
+            await updateDoc(doc(db, "fried_feed", postId), { expiresAt: newExpires, extendCount: newCount, extendedByUsers: arrayUnion(currentUser.uid) });
             return true;
         }
 
         async function addPost(text) {
             if (!text.trim()) return;
             const expiresAt = new Timestamp(Math.floor(Date.now() / 1000) + 3600, 0);
-            await addDoc(postsRef, {
-                text: text.trim(),
-                authorId: currentUser.uid,
-                authorEmail: currentUser.email,
-                createdAt: serverTimestamp(),
-                expiresAt: expiresAt,
-                extendCount: 0,
-                extendedByUsers: []
-            });
+            await addDoc(postsRef, { text: text.trim(), authorId: currentUser.uid, authorEmail: currentUser.email, createdAt: serverTimestamp(), expiresAt: expiresAt, extendCount: 0, extendedByUsers: [] });
             postInput.value = '';
         }
 
@@ -709,11 +244,8 @@
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const expiresAt = data.expiresAt;
-                    if (expiresAt && expiresAt.toMillis() > Timestamp.now().toMillis()) {
-                        posts.push({ id: docSnap.id, ...data });
-                    } else if (expiresAt) {
-                        deleteDoc(doc(db, "fried_feed", docSnap.id));
-                    }
+                    if (expiresAt && expiresAt.toMillis() > Timestamp.now().toMillis()) posts.push({ id: docSnap.id, ...data });
+                    else if (expiresAt) deleteDoc(doc(db, "fried_feed", docSnap.id));
                 });
                 renderFeed(posts);
             });
@@ -721,66 +253,32 @@
 
         function renderFeed(posts) {
             if (!feedList) return;
-            if (posts.length === 0) {
-                feedList.innerHTML = '<div class="empty">🔥 Здесь пока ничего нет. Напиши первый пост!</div>';
-                return;
-            }
+            if (posts.length === 0) { feedList.innerHTML = '<div class="empty">🔥 Здесь пока ничего нет. Напиши первый пост!</div>'; return; }
             feedList.innerHTML = posts.map(post => {
                 const date = post.createdAt ? new Date(post.createdAt.toMillis()).toLocaleString() : 'только что';
                 const isAuthor = post.authorId === currentUser.uid;
-                return `
-                    <div class="post-card" data-post-id="${post.id}">
-                        <div class="post-header">
-                            <div>
-                                <div class="post-author">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div>
-                                <div class="post-date">${date}</div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div class="timer">⏳ ${getTimeLeft(post.expiresAt)}</div>
-                                ${isAuthor ? `<button class="post-menu-btn" data-action="delete" data-id="${post.id}">⋮</button>` : ''}
-                            </div>
-                        </div>
-                        <div class="post-text">${escapeHtml(post.text)}</div>
-                        <div class="post-actions">
-                            <button class="fire-btn" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>
-                                🔥 <span class="fire-count">${post.extendCount || 0}</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
+                return `<div class="post-card"><div class="post-header"><div><div class="post-author">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div><div class="post-date">${date}</div></div><div style="display: flex; align-items: center; gap: 8px;"><div class="timer">⏳ ${getTimeLeft(post.expiresAt)}</div>${isAuthor ? `<button class="post-menu-btn" data-action="delete" data-id="${post.id}">⋮</button>` : ''}</div></div><div class="post-text">${escapeHtml(post.text)}</div><div class="post-actions"><button class="fire-btn" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>🔥 <span class="fire-count">${post.extendCount || 0}</span></button></div></div>`;
             }).join('');
-            
             document.querySelectorAll('.fire-btn').forEach(btn => {
                 btn.addEventListener('click', async (event) => {
                     event.stopPropagation();
-                    const postId = btn.dataset.id;
-                    const expiresSec = parseInt(btn.dataset.expires);
-                    const extendCount = parseInt(btn.dataset.extends);
+                    const postId = btn.dataset.id, expiresSec = parseInt(btn.dataset.expires), extendCount = parseInt(btn.dataset.extends);
                     let extendedByUsers = [];
-                    try { extendedByUsers = JSON.parse(btn.dataset.users || '[]'); } catch (e) { }
-                    if (extendedByUsers.includes(currentUser?.uid)) {
-                        showFloatingX(event);
-                        return;
-                    }
+                    try { extendedByUsers = JSON.parse(btn.dataset.users || '[]'); } catch(e) {}
+                    if (extendedByUsers.includes(currentUser?.uid)) { showFloatingX(event); return; }
                     await extendPost(postId, new Timestamp(expiresSec, 0), extendCount, extendedByUsers);
                 });
             });
-            
             document.querySelectorAll('.post-menu-btn').forEach(btn => {
                 btn.addEventListener('click', async (event) => {
                     event.stopPropagation();
-                    const postId = btn.dataset.id;
-                    if (confirm('Удалить этот пост?')) {
-                        await deletePost(postId);
-                    }
+                    if (confirm('Удалить этот пост?')) await deletePost(btn.dataset.id);
                 });
             });
         }
 
-        // ========== ЧАТЫ ==========
         function getChatId(email1, email2) {
-            const a = email1.toLowerCase().trim();
-            const b = email2.toLowerCase().trim();
+            const a = email1.toLowerCase().trim(), b = email2.toLowerCase().trim();
             return a < b ? `${a}_${b}` : `${b}_${a}`;
         }
 
@@ -789,51 +287,26 @@
             const chatId = getChatId(currentUser.email, otherEmail);
             const chatRef = doc(db, "chats", chatId);
             const chatSnap = await getDoc(chatRef);
-            if (!chatSnap.exists()) {
-                await setDoc(chatRef, {
-                    participants: [currentUser.email, otherEmail],
-                    createdAt: serverTimestamp(),
-                    lastMessage: null,
-                    lastMessageTime: null
-                });
-            }
+            if (!chatSnap.exists()) await setDoc(chatRef, { participants: [currentUser.email, otherEmail], createdAt: serverTimestamp(), lastMessage: null, lastMessageTime: null });
             return chatId;
         }
 
-        async function deleteMessage(chatId, messageId) {
-            await deleteDoc(doc(db, "chats", chatId, "messages", messageId));
-        }
+        async function deleteMessage(chatId, messageId) { await deleteDoc(doc(db, "chats", chatId, "messages", messageId)); }
 
         async function sendMessage(text) {
             if (!text.trim() || !currentChatId) return;
             const chatRef = doc(db, "chats", currentChatId);
-            const messagesRef = collection(chatRef, "messages");
-            await addDoc(messagesRef, {
-                text: text.trim(),
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: serverTimestamp()
-            });
-            await updateDoc(chatRef, {
-                lastMessage: text.trim(),
-                lastMessageTime: serverTimestamp()
-            });
+            await addDoc(collection(chatRef, "messages"), { text: text.trim(), senderId: currentUser.uid, senderEmail: currentUser.email, timestamp: serverTimestamp() });
+            await updateDoc(chatRef, { lastMessage: text.trim(), lastMessageTime: serverTimestamp() });
             messageInput.value = '';
         }
 
         async function createNewChat() {
             const otherEmail = newChatEmailInput.value.trim();
             if (!otherEmail) return;
-            if (otherEmail === currentUser.email) {
-                showLoginError("Нельзя создать чат с самим собой");
-                return;
-            }
+            if (otherEmail === currentUser.email) { showLoginError("Нельзя создать чат с самим собой"); return; }
             const chatId = await getOrCreateChat(otherEmail);
-            if (chatId) {
-                newChatEmailInput.value = '';
-                // Принудительно обновляем список чатов и открываем новый
-                openChat(chatId, otherEmail);
-            }
+            if (chatId) { newChatEmailInput.value = ''; openChat(chatId, otherEmail); }
         }
 
         function subscribeToChats() {
@@ -841,47 +314,23 @@
             const q = query(chatsRef, where("participants", "array-contains", currentUser.email), orderBy("lastMessageTime", "desc"));
             unsubscribeChats = onSnapshot(q, (snapshot) => {
                 const chats = [];
-                snapshot.forEach(docSnap => {
-                    chats.push({ id: docSnap.id, ...docSnap.data() });
-                });
+                snapshot.forEach(docSnap => chats.push({ id: docSnap.id, ...docSnap.data() }));
                 renderChatList(chats);
             });
         }
 
         function renderChatList(chats) {
             if (!chatListScroll) return;
-            if (chats.length === 0) {
-                chatListScroll.innerHTML = '<div class="empty">Нет чатов</div>';
-                return;
-            }
+            if (chats.length === 0) { chatListScroll.innerHTML = '<div class="empty">Нет чатов</div>'; return; }
             chatListScroll.innerHTML = chats.map(chat => {
                 const otherEmail = chat.participants.find(e => e !== currentUser.email);
-                const lastMsg = chat.lastMessage || "";
-                return `
-                    <div class="chat-item ${currentChatId === chat.id ? 'active' : ''}" data-chat-id="${chat.id}" data-other-email="${otherEmail}">
-                        <div class="chat-name">${escapeHtml(otherEmail?.split('@')[0] || otherEmail)}</div>
-                        <div class="chat-last-msg">${escapeHtml(lastMsg.substring(0, 50))}</div>
-                    </div>
-                `;
+                return `<div class="chat-item ${currentChatId === chat.id ? 'active' : ''}" data-chat-id="${chat.id}" data-other-email="${otherEmail}"><div class="chat-name">${escapeHtml(otherEmail?.split('@')[0] || otherEmail)}</div><div class="chat-last-msg">${escapeHtml((chat.lastMessage || "").substring(0, 50))}</div></div>`;
             }).join('');
-            
             document.querySelectorAll('.chat-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    const chatId = el.dataset.chatId;
-                    const otherEmail = el.dataset.otherEmail;
-                    openChat(chatId, otherEmail);
-                });
+                el.addEventListener('click', () => openChat(el.dataset.chatId, el.dataset.otherEmail));
             });
-            
-            // Восстанавливаем последний открытый чат
             const lastChatId = getLastChatId();
-            if (lastChatId && !currentChatId) {
-                const lastChat = chats.find(c => c.id === lastChatId);
-                if (lastChat) {
-                    const otherEmail = lastChat.participants.find(e => e !== currentUser.email);
-                    openChat(lastChatId, otherEmail);
-                }
-            }
+            if (lastChatId && !currentChatId) { const lastChat = chats.find(c => c.id === lastChatId); if (lastChat) openChat(lastChatId, lastChat.participants.find(e => e !== currentUser.email)); }
         }
 
         async function openChat(chatId, otherEmail) {
@@ -890,72 +339,38 @@
             chatTitleHeader.innerText = otherEmail?.split('@')[0] || otherEmail;
             chatMessagesArea.style.display = 'flex';
             noChatSelected.style.display = 'none';
-            
             if (unsubscribeMessages) unsubscribeMessages();
-            const messagesRef = collection(db, "chats", chatId, "messages");
-            const q = query(messagesRef, orderBy("timestamp", "asc"));
+            const q = query(collection(db, "chats", chatId, "messages"), orderBy("timestamp", "asc"));
             unsubscribeMessages = onSnapshot(q, (snapshot) => {
                 const messages = [];
-                snapshot.forEach(docSnap => {
-                    messages.push({ id: docSnap.id, ...docSnap.data() });
-                });
+                snapshot.forEach(docSnap => messages.push({ id: docSnap.id, ...docSnap.data() }));
                 renderMessages(messages);
             });
-            
-            document.querySelectorAll('.chat-item').forEach(el => {
-                if (el.dataset.chatId === chatId) el.classList.add('active');
-                else el.classList.remove('active');
-            });
+            document.querySelectorAll('.chat-item').forEach(el => { if (el.dataset.chatId === chatId) el.classList.add('active'); else el.classList.remove('active'); });
         }
 
         function renderMessages(messages) {
             if (!messagesList) return;
-            if (messages.length === 0) {
-                messagesList.innerHTML = '<div class="empty">Нет сообщений</div>';
-                return;
-            }
+            if (messages.length === 0) { messagesList.innerHTML = '<div class="empty">Нет сообщений</div>'; return; }
             messagesList.innerHTML = messages.map(msg => {
                 const isMine = msg.senderId === currentUser.uid;
                 const time = msg.timestamp ? new Date(msg.timestamp.toMillis()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                return `
-                    <div class="${isMine ? 'message-mine' : 'message-other'}" data-message-id="${msg.id}" data-chat-id="${currentChatId}">
-                        <div class="message-text">${escapeHtml(msg.text)}</div>
-                        <div class="message-time">${time}</div>
-                    </div>
-                `;
+                return `<div class="${isMine ? 'message-mine' : 'message-other'}" data-message-id="${msg.id}" data-chat-id="${currentChatId}"><div class="message-text">${escapeHtml(msg.text)}</div><div class="message-time">${time}</div></div>`;
             }).join('');
-            
             document.querySelectorAll('.message-mine').forEach(el => {
-                el.addEventListener('click', async () => {
-                    const messageId = el.dataset.messageId;
-                    const chatId = el.dataset.chatId;
-                    if (confirm('Удалить это сообщение?')) {
-                        await deleteMessage(chatId, messageId);
-                    }
-                });
+                el.addEventListener('click', async () => { if (confirm('Удалить это сообщение?')) await deleteMessage(el.dataset.chatId, el.dataset.messageId); });
             });
-            
             messagesList.scrollTop = messagesList.scrollHeight;
         }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
-        }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
 
         async function handleAuth() {
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value;
-            if (!email || !password) {
-                showLoginError('Заполните почту и пароль');
-                return;
-            }
+            const email = loginEmail.value.trim(), password = loginPassword.value;
+            if (!email || !password) { showLoginError('Заполните почту и пароль'); return; }
             try {
-                if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                }
+                if (isLoginMode) await signInWithEmailAndPassword(auth, email, password);
+                else await createUserWithEmailAndPassword(auth, email, password);
             } catch (err) {
                 if (err.code === 'auth/email-already-in-use') showLoginError('Email уже используется');
                 else if (err.code === 'auth/user-not-found') showLoginError('Пользователь не найден');

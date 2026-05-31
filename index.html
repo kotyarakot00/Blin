@@ -95,7 +95,7 @@
 
         .main-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px;
             height: 85vh;
             display: flex;
             background: #1e1e1e;
@@ -170,7 +170,6 @@
             font-size: 13px;
         }
 
-        /* Жареная лента — новый стиль */
         .feed-section {
             flex: 1;
             display: flex;
@@ -195,43 +194,27 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .post-card {
-            background: #1e1e1e;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid #2c2c2c;
+            background: #2a2a2a;
+            border-radius: 20px;
+            padding: 16px;
+            border-left: 4px solid #FFB300;
         }
 
         .post-header {
-            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 12px;
         }
 
-        .post-author-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .post-name {
+        .post-author {
             font-weight: bold;
-            color: #eee;
+            color: #FFD54F;
+            font-size: 14px;
         }
 
         .post-date {
@@ -239,57 +222,46 @@
             color: #888;
         }
 
-        .post-menu {
+        .post-text {
+            font-size: 15px;
+            color: #eee;
+            margin: 12px 0;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .fire-btn {
             background: none;
             border: none;
-            color: #888;
+            font-size: 20px;
             cursor: pointer;
-            font-size: 18px;
-        }
-
-        .post-image {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-            background: #0a0a0a;
-        }
-
-        .post-stats {
-            padding: 10px 16px;
-            display: flex;
-            gap: 16px;
-            border-top: 1px solid #2c2c2c;
-            font-size: 13px;
-            color: #888;
-        }
-
-        .post-actions-feed {
-            padding: 8px 16px 12px;
-            display: flex;
-            gap: 24px;
-            border-top: 1px solid #2c2c2c;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
+            filter: grayscale(0.3);
+            transition: 0.1s;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #aaa;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: 0.1s;
+            gap: 4px;
         }
 
-        .action-btn:hover {
-            background: #2a2a2a;
+        .fire-btn:hover {
+            transform: scale(1.05);
+            filter: grayscale(0);
         }
 
-        .fire-action {
-            color: #FFB300;
+        .fire-count {
+            font-size: 13px;
+            color: #ffb74d;
+        }
+
+        .timer {
+            font-size: 11px;
+            color: #ff8c00;
         }
 
         .new-post {
@@ -309,6 +281,11 @@
             outline: none;
         }
 
+        .new-post input:focus {
+            background: #333;
+            box-shadow: 0 0 0 2px #FFB300;
+        }
+
         .new-post button {
             background: #FFB300;
             border: none;
@@ -319,7 +296,6 @@
             color: #1e1e1e;
         }
 
-        /* Чаты */
         .chats-section {
             flex: 1;
             display: flex;
@@ -366,6 +342,11 @@
             padding: 8px 12px;
             color: white;
             outline: none;
+        }
+
+        .create-chat input:focus {
+            background: #333;
+            box-shadow: 0 0 0 2px #FFB300;
         }
 
         .create-chat button {
@@ -478,6 +459,11 @@
             outline: none;
         }
 
+        .new-message input:focus {
+            background: #333;
+            box-shadow: 0 0 0 2px #FFB300;
+        }
+
         .new-message button {
             background: #FFB300;
             border: none;
@@ -507,9 +493,18 @@
             100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); }
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e1e1e; }
-        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -703,11 +698,6 @@
             });
         }
 
-        function getRandomAvatar() {
-            const avatars = ['😈', '🔥', '🥞', '💀', '👻', '🤡', '🦎', '🐻', '🐼', '🐧', '🐙', '🦄'];
-            return avatars[Math.floor(Math.random() * avatars.length)];
-        }
-
         function renderFeed(posts) {
             if (!feedList) return;
             if (posts.length === 0) {
@@ -715,38 +705,27 @@
                 return;
             }
             feedList.innerHTML = posts.map(post => {
-                const avatar = getRandomAvatar();
                 const date = post.createdAt ? new Date(post.createdAt.toMillis()).toLocaleString() : 'только что';
                 return `
                     <div class="post-card">
                         <div class="post-header">
-                            <div class="post-author-info">
-                                <div class="post-avatar">${avatar}</div>
-                                <div>
-                                    <div class="post-name">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div>
-                                    <div class="post-date">${date}</div>
-                                </div>
+                            <div>
+                                <div class="post-author">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div>
+                                <div class="post-date">${date}</div>
                             </div>
-                            <button class="post-menu">⋯</button>
+                            <div class="timer">⏳ ${getTimeLeft(post.expiresAt)}</div>
                         </div>
-                        <div class="post-text" style="padding: 0 16px 12px;">${escapeHtml(post.text)}</div>
-                        <div class="post-stats">
-                            <span>🔥 ${post.extendCount || 0} нагревов</span>
-                            <span>💬 0</span>
-                            <span>👁️ ${Math.floor(Math.random() * 1000)}</span>
-                        </div>
-                        <div class="post-actions-feed">
-                            <button class="action-btn fire-action" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>
-                                🔥 <span>Поджарить</span>
+                        <div class="post-text">${escapeHtml(post.text)}</div>
+                        <div class="post-actions">
+                            <button class="fire-btn" data-id="${post.id}" data-extends="${post.extendCount || 0}" data-expires="${post.expiresAt?.seconds || 0}" data-users='${JSON.stringify(post.extendedByUsers || [])}'>
+                                🔥 <span class="fire-count">${post.extendCount || 0}</span>
                             </button>
-                            <button class="action-btn">💬 Комментировать</button>
-                            <button class="action-btn">🔄 Репост</button>
                         </div>
                     </div>
                 `;
             }).join('');
             
-            document.querySelectorAll('.fire-action').forEach(btn => {
+            document.querySelectorAll('.fire-btn').forEach(btn => {
                 btn.addEventListener('click', async (event) => {
                     event.stopPropagation();
                     const postId = btn.dataset.id;

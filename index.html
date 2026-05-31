@@ -621,6 +621,19 @@
         let currentChatId = null;
         let isLoginMode = true;
 
+        // Сохраняем и восстанавливаем открытый чат
+        function saveCurrentChatId(chatId) {
+            if (chatId) {
+                localStorage.setItem('blin_current_chat', chatId);
+            } else {
+                localStorage.removeItem('blin_current_chat');
+            }
+        }
+
+        function loadSavedChatId() {
+            return localStorage.getItem('blin_current_chat');
+        }
+
         function showLoginError(text) {
             loginError.innerText = text;
             loginError.style.display = 'block';
@@ -743,12 +756,13 @@
         }
 
         function getChatId(email1, email2) {
-            const a = email1.toLowerCase();
-            const b = email2.toLowerCase();
+            const a = email1.toLowerCase().trim();
+            const b = email2.toLowerCase().trim();
             return a < b ? `${a}_${b}` : `${b}_${a}`;
         }
 
-        async function getOrCreateChat(otherEmail) {
+        // При отправке сообщения — автоматически создаём чат
+        async function ensureChatExists(otherEmail) {
             if (otherEmail === currentUser.email) return null;
             const chatId = getChatId(currentUser.email, otherEmail);
             const chatRef = doc(db, "chats", chatId);
@@ -764,6 +778,26 @@
             return chatId;
         }
 
+        async function sendMessageToEmail(text, toEmail) {
+            if (!text.trim() || !toEmail) return null;
+            const chatId = await ensureChatExists(toEmail);
+            if (!chatId) return null;
+            
+            const chatRef = doc(db, "chats", chatId);
+            const messagesRef = collection(chatRef, "messages");
+            await addDoc(messagesRef, {
+                text: text.trim(),
+                senderId: currentUser.uid,
+                senderEmail: currentUser.email,
+                timestamp: serverTimestamp()
+            });
+            await updateDoc(chatRef, {
+                lastMessage: text.trim(),
+                lastMessageTime: serverTimestamp()
+            });
+            return chatId;
+        }
+
         function subscribeToChats() {
             if (unsubscribeChats) unsubscribeChats();
             const chatsRef = collection(db, "chats");
@@ -774,6 +808,15 @@
                     chats.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 renderChatList(chats);
+                
+                // После загрузки списка чатов — восстанавливаем последний открытый
+                const savedId = loadSavedChatId();
+                if (savedId && chats.find(c => c.id === savedId)) {
+                    const otherEmail = chats.find(c => c.id === savedId)?.participants.find(e => e !== currentUser.email);
+                    if (otherEmail) {
+                        openChat(savedId, otherEmail);
+                    }
+                }
             });
         }
 
@@ -804,6 +847,7 @@
 
         async function openChat(chatId, otherEmail) {
             currentChatId = chatId;
+            saveCurrentChatId(chatId);
             chatTitleHeader.innerText = otherEmail?.split('@')[0] || otherEmail;
             chatMessagesArea.style.display = 'flex';
             noChatSelected.style.display = 'none';
@@ -863,11 +907,13 @@
         async function createNewChat() {
             const otherEmail = newChatEmailInput.value.trim();
             if (!otherEmail) return;
-            const chatId = await getOrCreateChat(otherEmail);
+            const chatId = await ensureChatExists(otherEmail);
             if (chatId) {
                 newChatEmailInput.value = '';
                 subscribeToChats();
                 openChat(chatId, otherEmail);
+            } else {
+                showLoginError("Нельзя создать чат с самим собой");
             }
         }
 
@@ -919,6 +965,8 @@
                 subscribeToChats();
             } else {
                 currentUser = null;
+                currentChatId = null;
+                saveCurrentChatId(null);
                 if (unsubscribeFeed) unsubscribeFeed();
                 if (unsubscribeChats) unsubscribeChats();
                 if (unsubscribeMessages) unsubscribeMessages();

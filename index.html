@@ -170,14 +170,14 @@
             font-size: 13px;
         }
 
-        .feed-section {
+        .feed-section, .chats-section {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        .feed-header {
+        .feed-header, .chats-header {
             padding: 16px 20px;
             border-bottom: 1px solid #2c2c2c;
             font-size: 20px;
@@ -202,6 +202,7 @@
             border-radius: 20px;
             padding: 16px;
             border-left: 4px solid #FFB300;
+            position: relative;
         }
 
         .post-header {
@@ -220,6 +221,7 @@
         .post-date {
             font-size: 11px;
             color: #888;
+            margin-top: 2px;
         }
 
         .post-text {
@@ -264,6 +266,21 @@
             color: #ff8c00;
         }
 
+        .post-menu-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .post-menu-btn:hover {
+            background: #3a3a3a;
+            color: white;
+        }
+
         .new-post {
             padding: 12px 16px;
             border-top: 1px solid #2c2c2c;
@@ -294,24 +311,6 @@
             font-weight: bold;
             cursor: pointer;
             color: #1e1e1e;
-        }
-
-        .chats-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chats-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid #2c2c2c;
-            font-size: 20px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FFD54F, #FFB300);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
 
         .chats-layout {
@@ -421,6 +420,12 @@
             border-radius: 18px 18px 4px 18px;
             padding: 8px 12px;
             max-width: 80%;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .message-mine:hover {
+            background: #FFB30030;
         }
 
         .message-other {
@@ -584,7 +589,9 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const postsRef = collection(db, "fried_feed");
+        const chatsRef = collection(db, "chats");
 
+        // DOM элементы
         const loginScreen = document.getElementById('login-screen');
         const mainContainer = document.getElementById('main-container');
         const loginEmail = document.getElementById('login-email');
@@ -621,17 +628,14 @@
         let currentChatId = null;
         let isLoginMode = true;
 
-        // Сохраняем и восстанавливаем открытый чат
-        function saveCurrentChatId(chatId) {
-            if (chatId) {
-                localStorage.setItem('blin_current_chat', chatId);
-            } else {
-                localStorage.removeItem('blin_current_chat');
-            }
+        // Сохранение последнего открытого чата (только для удобства)
+        function saveLastChatId(chatId) {
+            if (chatId) localStorage.setItem('blin_last_chat', chatId);
+            else localStorage.removeItem('blin_last_chat');
         }
 
-        function loadSavedChatId() {
-            return localStorage.getItem('blin_current_chat');
+        function getLastChatId() {
+            return localStorage.getItem('blin_last_chat');
         }
 
         function showLoginError(text) {
@@ -661,6 +665,12 @@
             const minutes = Math.floor(diff / 60000);
             if (minutes > 60) return `${Math.floor(minutes/60)}ч ${minutes%60}м`;
             return `${minutes}м`;
+        }
+
+        // ========== ЖАРЕНАЯ ЛЕНТА ==========
+        async function deletePost(postId) {
+            if (!currentUser) return;
+            await deleteDoc(doc(db, "fried_feed", postId));
         }
 
         async function extendPost(postId, currentExpiresAt, currentExtendCount, extendedByUsers) {
@@ -719,14 +729,18 @@
             }
             feedList.innerHTML = posts.map(post => {
                 const date = post.createdAt ? new Date(post.createdAt.toMillis()).toLocaleString() : 'только что';
+                const isAuthor = post.authorId === currentUser.uid;
                 return `
-                    <div class="post-card">
+                    <div class="post-card" data-post-id="${post.id}">
                         <div class="post-header">
                             <div>
                                 <div class="post-author">${escapeHtml(post.authorEmail?.split('@')[0] || post.authorEmail)}</div>
                                 <div class="post-date">${date}</div>
                             </div>
-                            <div class="timer">⏳ ${getTimeLeft(post.expiresAt)}</div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="timer">⏳ ${getTimeLeft(post.expiresAt)}</div>
+                                ${isAuthor ? `<button class="post-menu-btn" data-action="delete" data-id="${post.id}">⋮</button>` : ''}
+                            </div>
                         </div>
                         <div class="post-text">${escapeHtml(post.text)}</div>
                         <div class="post-actions">
@@ -753,16 +767,26 @@
                     await extendPost(postId, new Timestamp(expiresSec, 0), extendCount, extendedByUsers);
                 });
             });
+            
+            document.querySelectorAll('.post-menu-btn').forEach(btn => {
+                btn.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+                    const postId = btn.dataset.id;
+                    if (confirm('Удалить этот пост?')) {
+                        await deletePost(postId);
+                    }
+                });
+            });
         }
 
+        // ========== ЧАТЫ ==========
         function getChatId(email1, email2) {
             const a = email1.toLowerCase().trim();
             const b = email2.toLowerCase().trim();
             return a < b ? `${a}_${b}` : `${b}_${a}`;
         }
 
-        // При отправке сообщения — автоматически создаём чат
-        async function ensureChatExists(otherEmail) {
+        async function getOrCreateChat(otherEmail) {
             if (otherEmail === currentUser.email) return null;
             const chatId = getChatId(currentUser.email, otherEmail);
             const chatRef = doc(db, "chats", chatId);
@@ -778,12 +802,13 @@
             return chatId;
         }
 
-        async function sendMessageToEmail(text, toEmail) {
-            if (!text.trim() || !toEmail) return null;
-            const chatId = await ensureChatExists(toEmail);
-            if (!chatId) return null;
-            
-            const chatRef = doc(db, "chats", chatId);
+        async function deleteMessage(chatId, messageId) {
+            await deleteDoc(doc(db, "chats", chatId, "messages", messageId));
+        }
+
+        async function sendMessage(text) {
+            if (!text.trim() || !currentChatId) return;
+            const chatRef = doc(db, "chats", currentChatId);
             const messagesRef = collection(chatRef, "messages");
             await addDoc(messagesRef, {
                 text: text.trim(),
@@ -795,12 +820,23 @@
                 lastMessage: text.trim(),
                 lastMessageTime: serverTimestamp()
             });
-            return chatId;
+            messageInput.value = '';
+        }
+
+        async function createNewChat() {
+            const otherEmail = newChatEmailInput.value.trim();
+            if (!otherEmail) return;
+            const chatId = await getOrCreateChat(otherEmail);
+            if (chatId) {
+                newChatEmailInput.value = '';
+                openChat(chatId, otherEmail);
+            } else {
+                showLoginError("Нельзя создать чат с самим собой");
+            }
         }
 
         function subscribeToChats() {
             if (unsubscribeChats) unsubscribeChats();
-            const chatsRef = collection(db, "chats");
             const q = query(chatsRef, where("participants", "array-contains", currentUser.email), orderBy("lastMessageTime", "desc"));
             unsubscribeChats = onSnapshot(q, (snapshot) => {
                 const chats = [];
@@ -808,15 +844,6 @@
                     chats.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 renderChatList(chats);
-                
-                // После загрузки списка чатов — восстанавливаем последний открытый
-                const savedId = loadSavedChatId();
-                if (savedId && chats.find(c => c.id === savedId)) {
-                    const otherEmail = chats.find(c => c.id === savedId)?.participants.find(e => e !== currentUser.email);
-                    if (otherEmail) {
-                        openChat(savedId, otherEmail);
-                    }
-                }
             });
         }
 
@@ -836,6 +863,7 @@
                     </div>
                 `;
             }).join('');
+            
             document.querySelectorAll('.chat-item').forEach(el => {
                 el.addEventListener('click', () => {
                     const chatId = el.dataset.chatId;
@@ -843,14 +871,25 @@
                     openChat(chatId, otherEmail);
                 });
             });
+            
+            // Восстанавливаем последний открытый чат, если он есть и не открыт
+            const lastChatId = getLastChatId();
+            if (lastChatId && !currentChatId) {
+                const lastChat = chats.find(c => c.id === lastChatId);
+                if (lastChat) {
+                    const otherEmail = lastChat.participants.find(e => e !== currentUser.email);
+                    openChat(lastChatId, otherEmail);
+                }
+            }
         }
 
         async function openChat(chatId, otherEmail) {
             currentChatId = chatId;
-            saveCurrentChatId(chatId);
+            saveLastChatId(chatId);
             chatTitleHeader.innerText = otherEmail?.split('@')[0] || otherEmail;
             chatMessagesArea.style.display = 'flex';
             noChatSelected.style.display = 'none';
+            
             if (unsubscribeMessages) unsubscribeMessages();
             const messagesRef = collection(db, "chats", chatId, "messages");
             const q = query(messagesRef, orderBy("timestamp", "asc"));
@@ -861,6 +900,7 @@
                 });
                 renderMessages(messages);
             });
+            
             document.querySelectorAll('.chat-item').forEach(el => {
                 if (el.dataset.chatId === chatId) el.classList.add('active');
                 else el.classList.remove('active');
@@ -877,44 +917,25 @@
                 const isMine = msg.senderId === currentUser.uid;
                 const time = msg.timestamp ? new Date(msg.timestamp.toMillis()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
                 return `
-                    <div class="${isMine ? 'message-mine' : 'message-other'}">
+                    <div class="${isMine ? 'message-mine' : 'message-other'}" data-message-id="${msg.id}" data-chat-id="${currentChatId}">
                         <div class="message-text">${escapeHtml(msg.text)}</div>
                         <div class="message-time">${time}</div>
                     </div>
                 `;
             }).join('');
+            
+            // Удаление своих сообщений по клику
+            document.querySelectorAll('.message-mine').forEach(el => {
+                el.addEventListener('click', async () => {
+                    const messageId = el.dataset.messageId;
+                    const chatId = el.dataset.chatId;
+                    if (confirm('Удалить это сообщение?')) {
+                        await deleteMessage(chatId, messageId);
+                    }
+                });
+            });
+            
             messagesList.scrollTop = messagesList.scrollHeight;
-        }
-
-        async function sendMessage(text) {
-            if (!text.trim()) return;
-            if (!currentChatId) return;
-            const chatRef = doc(db, "chats", currentChatId);
-            const messagesRef = collection(chatRef, "messages");
-            await addDoc(messagesRef, {
-                text: text.trim(),
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: serverTimestamp()
-            });
-            await updateDoc(chatRef, {
-                lastMessage: text.trim(),
-                lastMessageTime: serverTimestamp()
-            });
-            messageInput.value = '';
-        }
-
-        async function createNewChat() {
-            const otherEmail = newChatEmailInput.value.trim();
-            if (!otherEmail) return;
-            const chatId = await ensureChatExists(otherEmail);
-            if (chatId) {
-                newChatEmailInput.value = '';
-                subscribeToChats();
-                openChat(chatId, otherEmail);
-            } else {
-                showLoginError("Нельзя создать чат с самим собой");
-            }
         }
 
         function escapeHtml(str) {
@@ -966,7 +987,7 @@
             } else {
                 currentUser = null;
                 currentChatId = null;
-                saveCurrentChatId(null);
+                saveLastChatId(null);
                 if (unsubscribeFeed) unsubscribeFeed();
                 if (unsubscribeChats) unsubscribeChats();
                 if (unsubscribeMessages) unsubscribeMessages();

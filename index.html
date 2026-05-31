@@ -591,7 +591,6 @@
         const postsRef = collection(db, "fried_feed");
         const chatsRef = collection(db, "chats");
 
-        // DOM элементы
         const loginScreen = document.getElementById('login-screen');
         const mainContainer = document.getElementById('main-container');
         const loginEmail = document.getElementById('login-email');
@@ -628,7 +627,6 @@
         let currentChatId = null;
         let isLoginMode = true;
 
-        // Сохранение последнего открытого чата (только для удобства)
         function saveLastChatId(chatId) {
             if (chatId) localStorage.setItem('blin_last_chat', chatId);
             else localStorage.removeItem('blin_last_chat');
@@ -826,12 +824,15 @@
         async function createNewChat() {
             const otherEmail = newChatEmailInput.value.trim();
             if (!otherEmail) return;
+            if (otherEmail === currentUser.email) {
+                showLoginError("Нельзя создать чат с самим собой");
+                return;
+            }
             const chatId = await getOrCreateChat(otherEmail);
             if (chatId) {
                 newChatEmailInput.value = '';
+                // Принудительно обновляем список чатов и открываем новый
                 openChat(chatId, otherEmail);
-            } else {
-                showLoginError("Нельзя создать чат с самим собой");
             }
         }
 
@@ -872,7 +873,7 @@
                 });
             });
             
-            // Восстанавливаем последний открытый чат, если он есть и не открыт
+            // Восстанавливаем последний открытый чат
             const lastChatId = getLastChatId();
             if (lastChatId && !currentChatId) {
                 const lastChat = chats.find(c => c.id === lastChatId);
@@ -924,7 +925,6 @@
                 `;
             }).join('');
             
-            // Удаление своих сообщений по клику
             document.querySelectorAll('.message-mine').forEach(el => {
                 el.addEventListener('click', async () => {
                     const messageId = el.dataset.messageId;

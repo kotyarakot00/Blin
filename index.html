@@ -618,4 +618,75 @@
                 if (err.code === 'auth/email-already-in-use') showLoginError('Email уже используется');
                 else if (err.code === 'auth/user-not-found') showLoginError('Пользователь не найден');
                 else if (err.code === 'auth/wrong-password') showLoginError('Неверный пароль');
-                else
+                else if (err.code === 'auth/weak-password') showLoginError('Пароль должен быть не менее 6 символов');
+                else showLoginError('Ошибка: ' + err.message);
+            }
+        }
+
+        function switchToFeed() {
+            feedSection.classList.add('active');
+            chatsSection.classList.remove('active');
+            navFeedBtn.classList.add('active');
+            navChatsBtn.classList.remove('active');
+            mobileFeedBtn.classList.add('active');
+            mobileChatsBtn.classList.remove('active');
+            if (window.innerWidth < 768) hideMobileChat();
+        }
+
+        function switchToChats() {
+            feedSection.classList.remove('active');
+            chatsSection.classList.add('active');
+            navFeedBtn.classList.remove('active');
+            navChatsBtn.classList.add('active');
+            mobileFeedBtn.classList.remove('active');
+            mobileChatsBtn.classList.add('active');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            loginBtn.innerText = isLoginMode ? 'Войти' : 'Зарегистрироваться';
+            toggleBtn.innerHTML = isLoginMode ? 'Нет аккаунта? <span>Зарегистрироваться</span>' : 'Уже есть аккаунт? <span>Войти</span>';
+            loginError.style.display = 'none';
+        });
+
+        loginBtn.addEventListener('click', handleAuth);
+        loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAuth(); });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                userEmailDisplay.innerText = currentUser.email;
+                loginScreen.style.display = 'none';
+                mainContainer.style.display = 'flex';
+                await setDoc(doc(db, "users", user.uid), { email: user.email, uid: user.uid }, { merge: true });
+                subscribeToFeed();
+                subscribeToChats();
+            } else {
+                currentUser = null;
+                currentChatId = null;
+                saveLastChatId(null);
+                if (unsubscribeFeed) unsubscribeFeed();
+                if (unsubscribeChats) unsubscribeChats();
+                if (unsubscribeMessages) unsubscribeMessages();
+                loginScreen.style.display = 'block';
+                mainContainer.style.display = 'none';
+                loginEmail.value = '';
+                loginPassword.value = '';
+            }
+        });
+
+        navFeedBtn.addEventListener('click', switchToFeed);
+        navChatsBtn.addEventListener('click', switchToChats);
+        mobileFeedBtn.addEventListener('click', switchToFeed);
+        mobileChatsBtn.addEventListener('click', switchToChats);
+        backToChats.addEventListener('click', hideMobileChat);
+
+        sendPostBtn.addEventListener('click', () => addPost(postInput.value));
+        postInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addPost(postInput.value); });
+        sendMessageBtn.addEventListener('click', () => sendMessage(messageInput.value));
+        messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(messageInput.value); });
+        createChatBtn.addEventListener('click', createNewChat);
+        logoutUser.addEventListener('click', () => signOut(auth));
+    </script>
+</body>
+</html>

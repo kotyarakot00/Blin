@@ -15,29 +15,82 @@
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
+        /* Страница входа */
+        .login-screen {
+            background: #1e1e1e;
+            border-radius: 28px;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+            border: 1px solid #2c2c2c;
+        }
+        .login-screen .logo {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+        .login-screen h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #FFD54F, #FFB300);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 24px;
+        }
+        .login-screen input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            background: #2c2c2c;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .login-screen input:focus {
+            background: #333;
+            box-shadow: 0 0 0 2px #FFB300;
+        }
+        .login-screen button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 16px;
+            background: #FFB300;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1e1e1e;
+            font-size: 16px;
+        }
+        .login-screen .toggle {
+            margin-top: 16px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .login-screen .toggle span {
+            color: #FFB300;
+        }
+        .error {
+            background: #c62828;
+            padding: 10px;
+            border-radius: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+        }
+        /* Основное приложение */
         .app-layout {
             display: flex;
             gap: 20px;
             max-width: 1400px;
             width: 100%;
         }
-        /* Левая колонка — жареная лента */
-        .feed-column {
-            flex: 1;
-            background: #1e1e1e;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
-            border: 1px solid #2c2c2c;
-            display: flex;
-            flex-direction: column;
-        }
-        /* Правая колонка — чаты */
-        .chats-column {
+        .feed-column, .chats-column {
             flex: 1;
             background: #1e1e1e;
             border-radius: 28px;
@@ -54,14 +107,14 @@
             justify-content: space-between;
             align-items: center;
         }
-        .logo {
+        .logo-header {
             font-size: 24px;
             display: flex;
             align-items: center;
             gap: 8px;
             color: white;
         }
-        .logo span {
+        .logo-header span {
             font-size: 20px;
             background: linear-gradient(135deg, #FFD54F, #FFB300);
             -webkit-background-clip: text;
@@ -78,15 +131,12 @@
             cursor: pointer;
             font-size: 13px;
         }
-        .logout-btn:hover {
-            background: #444;
-        }
         .feed {
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            max-height: 70vh;
+            max-height: 65vh;
             overflow-y: auto;
             flex: 1;
         }
@@ -125,10 +175,6 @@
             cursor: pointer;
             filter: grayscale(0.3);
         }
-        .fire-btn:hover {
-            transform: scale(1.1);
-            filter: grayscale(0);
-        }
         .fire-count {
             font-size: 13px;
             color: #ffb74d;
@@ -153,10 +199,6 @@
             color: white;
             outline: none;
         }
-        .new-post input:focus {
-            background: #333;
-            box-shadow: 0 0 0 2px #FFB300;
-        }
         .new-post button {
             background: #FFB300;
             border: none;
@@ -171,7 +213,6 @@
             color: #aaa;
             padding: 40px;
         }
-        /* Чаты */
         .chat-list {
             max-height: 35vh;
             overflow-y: auto;
@@ -181,9 +222,6 @@
             padding: 12px 16px;
             cursor: pointer;
             border-bottom: 1px solid #2c2c2c;
-            transition: 0.1s;
-            display: flex;
-            justify-content: space-between;
         }
         .chat-item:hover {
             background: #2a2a2a;
@@ -213,12 +251,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 50vh;
-        }
-        .message {
-            display: flex;
-            flex-direction: column;
-            max-width: 80%;
+            max-height: 45vh;
         }
         .message-mine {
             align-self: flex-end;
@@ -226,6 +259,7 @@
             color: #1e1e1e;
             border-radius: 18px 18px 4px 18px;
             padding: 8px 12px;
+            max-width: 80%;
         }
         .message-other {
             align-self: flex-start;
@@ -233,6 +267,7 @@
             color: white;
             border-radius: 18px 18px 18px 4px;
             padding: 8px 12px;
+            max-width: 80%;
         }
         .message-text {
             font-size: 14px;
@@ -241,7 +276,6 @@
             font-size: 10px;
             margin-top: 4px;
             opacity: 0.7;
-            text-align: right;
         }
         .new-message {
             padding: 12px;
@@ -261,11 +295,10 @@
         .new-message button {
             background: #FFB300;
             border: none;
-            padding: 0 18px;
             border-radius: 40px;
-            font-weight: bold;
+            padding: 0 18px;
             cursor: pointer;
-            color: #1e1e1e;
+            font-weight: bold;
         }
         .create-chat {
             padding: 10px 16px;
@@ -290,28 +323,17 @@
             padding: 0 16px;
             cursor: pointer;
             font-weight: bold;
-            color: #1e1e1e;
-        }
-        .error {
-            background: #c62828;
-            padding: 8px;
-            border-radius: 12px;
-            margin: 10px;
-            text-align: center;
-            font-size: 13px;
         }
         .floating-x {
             position: fixed;
             pointer-events: none;
             font-size: 22px;
-            font-weight: bold;
             z-index: 1000;
             animation: floatUp 0.6s ease-out forwards;
         }
         @keyframes floatUp {
             0% { opacity: 1; transform: translate(0, 0) scale(0.8); }
-            30% { opacity: 1; transform: translate(calc(var(--x, 0) * 0.3), -40px) scale(1.1); }
-            100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.6), -80px) scale(0.5); }
+            100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); }
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1e1e1e; }
@@ -319,52 +341,61 @@
     </style>
 </head>
 <body>
-<div id="app" style="display: none;">
-    <div class="app-layout">
-        <!-- Левая колонка: жареная лента -->
-        <div class="feed-column">
-            <div class="header">
-                <div class="logo">🥞 <span>Жареная лента</span> 🔥</div>
-                <button id="logout-btn" class="logout-btn">Выйти</button>
-            </div>
-            <div id="feed" class="feed"></div>
-            <div class="new-post">
-                <input type="text" id="post-text" placeholder="Что нового? Напиши пост..." maxlength="500">
-                <button id="send-post">Поджарить 🍳</button>
-            </div>
-        </div>
+    <!-- Экран входа -->
+    <div id="login-screen" class="login-screen">
+        <div class="logo">🥞</div>
+        <h1>Blin</h1>
+        <input type="email" id="login-email" placeholder="Электронная почта">
+        <input type="password" id="login-password" placeholder="Пароль">
+        <button id="login-btn">Войти</button>
+        <div class="toggle" id="toggle-btn">Нет аккаунта? <span>Зарегистрироваться</span></div>
+        <div id="login-error" style="display: none;" class="error"></div>
+    </div>
 
-        <!-- Правая колонка: чаты -->
-        <div class="chats-column">
-            <div class="header">
-                <div class="logo">💬 <span>Чаты</span></div>
-            </div>
-            <div class="create-chat">
-                <input type="email" id="new-chat-email" placeholder="Email пользователя для чата">
-                <button id="create-chat-btn">Создать чат</button>
-            </div>
-            <div id="chat-list" class="chat-list"></div>
-            <div id="chat-area" class="chat-area" style="display: none;">
-                <div style="padding: 8px 16px; background: #252525; border-bottom: 1px solid #2c2c2c;">
-                    <span id="chat-title" style="font-weight: bold; color: #eee;"></span>
+    <!-- Основное приложение (скрыто до входа) -->
+    <div id="app" style="display: none;">
+        <div class="app-layout">
+            <div class="feed-column">
+                <div class="header">
+                    <div class="logo-header">🥞 <span>Жареная лента</span> 🔥</div>
+                    <button id="logout-btn" class="logout-btn">Выйти</button>
                 </div>
-                <div id="messages" class="messages"></div>
-                <div class="new-message">
-                    <input type="text" id="message-input" placeholder="Сообщение...">
-                    <button id="send-message">📤</button>
+                <div id="feed" class="feed"></div>
+                <div class="new-post">
+                    <input type="text" id="post-text" placeholder="Что нового? Напиши пост..." maxlength="500">
+                    <button id="send-post">Поджарить 🍳</button>
                 </div>
             </div>
-            <div id="no-chat-selected" class="empty" style="flex:1; display: flex; align-items: center; justify-content: center;">
-                Выберите чат или создайте новый
+
+            <div class="chats-column">
+                <div class="header">
+                    <div class="logo-header">💬 <span>Чаты</span></div>
+                </div>
+                <div class="create-chat">
+                    <input type="email" id="new-chat-email" placeholder="Email пользователя для чата">
+                    <button id="create-chat-btn">Создать чат</button>
+                </div>
+                <div id="chat-list" class="chat-list"></div>
+                <div id="chat-area" class="chat-area" style="display: none;">
+                    <div style="padding: 8px 16px; background: #252525; border-bottom: 1px solid #2c2c2c;">
+                        <span id="chat-title" style="font-weight: bold; color: #eee;"></span>
+                    </div>
+                    <div id="messages" class="messages"></div>
+                    <div class="new-message">
+                        <input type="text" id="message-input" placeholder="Сообщение...">
+                        <button id="send-message">📤</button>
+                    </div>
+                </div>
+                <div id="no-chat-selected" class="empty" style="flex:1; display: flex; align-items: center; justify-content: center;">
+                    Выберите чат или создайте новый
+                </div>
             </div>
         </div>
     </div>
-    <div id="global-error" class="error" style="display: none;"></div>
-</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, updateDoc, doc, deleteDoc, serverTimestamp, Timestamp, arrayUnion, getDoc, setDoc, where } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -383,14 +414,18 @@
     const postsRef = collection(db, "fried_feed");
 
     // DOM элементы
+    const loginScreen = document.getElementById('login-screen');
     const appDiv = document.getElementById('app');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+    const loginBtn = document.getElementById('login-btn');
+    const toggleBtn = document.getElementById('toggle-btn');
+    const loginError = document.getElementById('login-error');
+    
     const feedDiv = document.getElementById('feed');
     const postInput = document.getElementById('post-text');
     const sendPostBtn = document.getElementById('send-post');
     const logoutBtn = document.getElementById('logout-btn');
-    const errorDiv = document.getElementById('global-error');
-
-    // Элементы чатов
     const chatListDiv = document.getElementById('chat-list');
     const chatArea = document.getElementById('chat-area');
     const noChatDiv = document.getElementById('no-chat-selected');
@@ -406,12 +441,12 @@
     let unsubscribeChats = null;
     let unsubscribeMessages = null;
     let currentChatId = null;
+    let isLoginMode = true;
 
-    // ----- Вспомогательные функции -----
-    function showError(text) {
-        errorDiv.innerText = text;
-        errorDiv.style.display = 'block';
-        setTimeout(() => errorDiv.style.display = 'none', 5000);
+    function showLoginError(text) {
+        loginError.innerText = text;
+        loginError.style.display = 'block';
+        setTimeout(() => loginError.style.display = 'none', 4000);
     }
 
     function showFloatingX(event) {
@@ -420,8 +455,7 @@
         const div = document.createElement('div');
         div.className = 'floating-x';
         div.innerText = '❌';
-        const randomOffset = (Math.random() - 0.5) * 40;
-        div.style.setProperty('--x', randomOffset + 'px');
+        div.style.setProperty('--x', ((Math.random() - 0.5) * 40) + 'px');
         div.style.left = (x - 12) + 'px';
         div.style.top = (y - 12) + 'px';
         document.body.appendChild(div);
@@ -429,16 +463,15 @@
     }
 
     function getTimeLeft(expiresAt) {
-        if (!expiresAt) return "🔥 сгорел";
+        if (!expiresAt) return "сгорел";
         const now = Timestamp.now();
         const diff = expiresAt.toMillis() - now.toMillis();
-        if (diff <= 0) return "🔥 сгорел";
+        if (diff <= 0) return "сгорел";
         const minutes = Math.floor(diff / 60000);
         if (minutes > 60) return `${Math.floor(minutes/60)}ч ${minutes%60}м`;
         return `${minutes}м`;
     }
 
-    // ----- Жареная лента -----
     async function extendPost(postId, currentExpiresAt, currentExtendCount, extendedByUsers) {
         if (!currentUser) return false;
         if (extendedByUsers && extendedByUsers.includes(currentUser.uid)) return false;
@@ -446,33 +479,27 @@
         let newCount = (currentExtendCount || 0) + 1;
         if (newCount > 96) return false;
         newExpires = new Timestamp(newExpires.seconds + 900, newExpires.nanoseconds);
-        try {
-            await updateDoc(doc(db, "fried_feed", postId), {
-                expiresAt: newExpires,
-                extendCount: newCount,
-                extendedByUsers: arrayUnion(currentUser.uid)
-            });
-            return true;
-        } catch (err) { return false; }
+        await updateDoc(doc(db, "fried_feed", postId), {
+            expiresAt: newExpires,
+            extendCount: newCount,
+            extendedByUsers: arrayUnion(currentUser.uid)
+        });
+        return true;
     }
 
     async function addPost(text) {
         if (!text.trim()) return;
         const expiresAt = new Timestamp(Math.floor(Date.now() / 1000) + 3600, 0);
-        try {
-            await addDoc(postsRef, {
-                text: text.trim(),
-                authorId: currentUser.uid,
-                authorEmail: currentUser.email,
-                createdAt: serverTimestamp(),
-                expiresAt: expiresAt,
-                extendCount: 0,
-                extendedByUsers: []
-            });
-            postInput.value = '';
-        } catch (err) {
-            showError("Ошибка при отправке поста: " + err.message);
-        }
+        await addDoc(postsRef, {
+            text: text.trim(),
+            authorId: currentUser.uid,
+            authorEmail: currentUser.email,
+            createdAt: serverTimestamp(),
+            expiresAt: expiresAt,
+            extendCount: 0,
+            extendedByUsers: []
+        });
+        postInput.value = '';
     }
 
     function subscribeToFeed() {
@@ -490,7 +517,7 @@
                 }
             });
             renderFeed(activePosts);
-        }, (error) => showError("Ошибка загрузки ленты"));
+        });
     }
 
     function renderFeed(posts) {
@@ -499,10 +526,7 @@
             feedDiv.innerHTML = '<div class="empty">🥞 Лента пуста. Напиши первый пост!</div>';
             return;
         }
-        posts.sort((a,b) => {
-            if ((b.extendCount||0) !== (a.extendCount||0)) return (b.extendCount||0) - (a.extendCount||0);
-            return (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0);
-        });
+        posts.sort((a,b) => (b.extendCount||0) - (a.extendCount||0));
         feedDiv.innerHTML = posts.map(post => `
             <div class="post-card">
                 <div class="post-header">
@@ -529,13 +553,11 @@
                     showFloatingX(event);
                     return;
                 }
-                const success = await extendPost(postId, new Timestamp(expiresSec, 0), extendCount, extendedByUsers);
-                if (!success) showFloatingX(event);
+                await extendPost(postId, new Timestamp(expiresSec, 0), extendCount, extendedByUsers);
             });
         });
     }
 
-    // ----- Логика чатов -----
     function getChatId(email1, email2) {
         const a = email1.toLowerCase();
         const b = email2.toLowerCase();
@@ -544,7 +566,6 @@
 
     async function createChatIfNotExists(otherEmail) {
         if (otherEmail === currentUser.email) {
-            showError("Нельзя создать чат с самим собой");
             return null;
         }
         const chatId = getChatId(currentUser.email, otherEmail);
@@ -571,7 +592,7 @@
                 chats.push({ id: docSnap.id, ...docSnap.data() });
             });
             renderChatList(chats);
-        }, (error) => showError("Ошибка загрузки чатов"));
+        });
     }
 
     function renderChatList(chats) {
@@ -615,7 +636,7 @@
                 messages.push({ id: docSnap.id, ...docSnap.data() });
             });
             renderMessages(messages);
-        }, (error) => showError("Ошибка загрузки сообщений"));
+        });
         document.querySelectorAll('.chat-item').forEach(el => {
             if (el.dataset.chatId === chatId) el.classList.add('active');
             else el.classList.remove('active');
@@ -632,7 +653,7 @@
             const isMine = msg.senderId === currentUser.uid;
             const time = msg.timestamp ? new Date(msg.timestamp.toMillis()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
             return `
-                <div class="message ${isMine ? 'message-mine' : 'message-other'}">
+                <div class="${isMine ? 'message-mine' : 'message-other'}">
                     <div class="message-text">${escapeHtml(msg.text)}</div>
                     <div class="message-time">${time}</div>
                 </div>
@@ -644,23 +665,19 @@
     async function sendMessage(text) {
         if (!text.trim()) return;
         if (!currentChatId) return;
-        try {
-            const chatRef = doc(db, "chats", currentChatId);
-            const messagesRef = collection(chatRef, "messages");
-            await addDoc(messagesRef, {
-                text: text.trim(),
-                senderId: currentUser.uid,
-                senderEmail: currentUser.email,
-                timestamp: serverTimestamp()
-            });
-            await updateDoc(chatRef, {
-                lastMessage: text.trim(),
-                lastMessageTime: serverTimestamp()
-            });
-            messageInput.value = '';
-        } catch (err) {
-            showError("Ошибка отправки сообщения: " + err.message);
-        }
+        const chatRef = doc(db, "chats", currentChatId);
+        const messagesRef = collection(chatRef, "messages");
+        await addDoc(messagesRef, {
+            text: text.trim(),
+            senderId: currentUser.uid,
+            senderEmail: currentUser.email,
+            timestamp: serverTimestamp()
+        });
+        await updateDoc(chatRef, {
+            lastMessage: text.trim(),
+            lastMessageTime: serverTimestamp()
+        });
+        messageInput.value = '';
     }
 
     async function createNewChat() {
@@ -676,19 +693,49 @@
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
     }
 
-    // ----- Авторизация -----
-    onAuthStateChanged(auth, (user) => {
+    async function handleAuth() {
+        const email = loginEmail.value.trim();
+        const password = loginPassword.value;
+        if (!email || !password) {
+            showLoginError('Заполните почту и пароль');
+            return;
+        }
+        try {
+            if (isLoginMode) {
+                await signInWithEmailAndPassword(auth, email, password);
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+            }
+        } catch (err) {
+            if (err.code === 'auth/email-already-in-use') showLoginError('Email уже используется');
+            else if (err.code === 'auth/user-not-found') showLoginError('Пользователь не найден');
+            else if (err.code === 'auth/wrong-password') showLoginError('Неверный пароль');
+            else if (err.code === 'auth/weak-password') showLoginError('Пароль должен быть не менее 6 символов');
+            else showLoginError('Ошибка: ' + err.message);
+        }
+    }
+
+    // Смена режима вход/регистрация
+    toggleBtn.addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        loginBtn.innerText = isLoginMode ? 'Войти' : 'Зарегистрироваться';
+        toggleBtn.innerHTML = isLoginMode ? 'Нет аккаунта? <span>Зарегистрироваться</span>' : 'Уже есть аккаунт? <span>Войти</span>';
+        loginError.style.display = 'none';
+    });
+
+    loginBtn.addEventListener('click', handleAuth);
+    loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAuth(); });
+
+    // Состояние авторизации
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
+            loginScreen.style.display = 'none';
             appDiv.style.display = 'block';
+            await setDoc(doc(db, "users", user.uid), { email: user.email, uid: user.uid }, { merge: true });
             subscribeToFeed();
             subscribeToChats();
         } else {
@@ -696,17 +743,19 @@
             if (unsubscribeFeed) unsubscribeFeed();
             if (unsubscribeChats) unsubscribeChats();
             if (unsubscribeMessages) unsubscribeMessages();
-            window.location.href = window.location.href;
+            loginScreen.style.display = 'block';
+            appDiv.style.display = 'none';
+            loginEmail.value = '';
+            loginPassword.value = '';
         }
     });
 
-    // Обработчики
     sendPostBtn.addEventListener('click', () => addPost(postInput.value));
     postInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addPost(postInput.value); });
-    logoutBtn.addEventListener('click', () => signOut(auth).then(() => window.location.reload()));
     sendMessageBtn.addEventListener('click', () => sendMessage(messageInput.value));
     messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(messageInput.value); });
     createChatBtn.addEventListener('click', createNewChat);
+    logoutBtn.addEventListener('click', () => signOut(auth));
 </script>
 </body>
 </html>

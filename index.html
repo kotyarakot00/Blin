@@ -18,7 +18,7 @@
             min-height: 100vh;
         }
 
-        /* Экран входа */
+        /* ========== ЭКРАН ВХОДА ========== */
         .login-screen {
             background: #1e1e1e;
             border-radius: 28px;
@@ -33,17 +33,17 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-
         .login-screen .logo { font-size: 56px; margin-bottom: 16px; }
         .login-screen h1 { font-size: 32px; background: linear-gradient(135deg, #FFD54F, #FFB300); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; }
         .login-screen input { width: 100%; padding: 14px; margin: 8px 0; background: #2c2c2c; border: none; border-radius: 16px; color: white; font-size: 15px; outline: none; }
         .login-screen input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
-        .login-screen button { width: 100%; padding: 14px; margin-top: 16px; background: #FFB300; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; font-size: 16px; }
+        .login-screen button { width: 100%; padding: 14px; margin-top: 16px; background: #FFB300; border: none; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; font-size: 16px; transition: 0.2s; }
+        .login-screen button:hover { background: #FFA000; transform: scale(1.02); }
         .login-screen .toggle { margin-top: 16px; color: #aaa; cursor: pointer; }
         .login-screen .toggle span { color: #FFB300; }
         .error { background: #c62828; padding: 10px; border-radius: 16px; margin-top: 16px; font-size: 13px; }
 
-        /* Основной контейнер */
+        /* ========== ОСНОВНОЙ КОНТЕЙНЕР ========== */
         .main-container {
             display: flex;
             flex-direction: column;
@@ -61,16 +61,17 @@
             background: #1e1e1e;
         }
         .user-email { color: #FFD54F; font-weight: bold; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; }
-        .logout-user { background: #333; border: none; padding: 6px 14px; border-radius: 40px; color: white; cursor: pointer; font-size: 13px; }
+        .logout-user { background: #333; border: none; padding: 6px 14px; border-radius: 40px; color: white; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .logout-user:hover { background: #444; }
 
-        /* Контентная область (скроллится) */
+        /* Контентная область */
         .content-scroll {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Жареная лента */
+        /* ========== ЖАРЕНАЯ ЛЕНТА ========== */
         .feed-section, .chats-section {
             display: none;
             flex-direction: column;
@@ -114,10 +115,12 @@
         .post-date { font-size: 10px; color: #888; margin-top: 2px; }
         .post-text { font-size: 14px; color: #eee; margin: 10px 0; word-break: break-word; line-height: 1.4; }
         .post-actions { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
-        .fire-btn { background: none; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .fire-btn { background: none; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 20px; transition: 0.1s; }
+        .fire-btn:hover { background: #3a3a3a; transform: scale(1.02); }
         .fire-count { font-size: 13px; color: #ffb74d; }
         .timer { font-size: 10px; color: #ff8c00; }
-        .post-menu-btn { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+        .post-menu-btn { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.1s; }
+        .post-menu-btn:hover { background: #3a3a3a; color: white; }
 
         .new-post {
             padding: 12px;
@@ -127,30 +130,19 @@
             background: #1e1e1e;
         }
         .new-post input { flex: 1; padding: 10px; background: #2c2c2c; border: none; border-radius: 40px; color: white; outline: none; font-size: 14px; }
-        .new-post button { background: #FFB300; border: none; padding: 0 18px; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; }
+        .new-post input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .new-post button { background: #FFB300; border: none; padding: 0 18px; border-radius: 40px; font-weight: bold; cursor: pointer; color: #1e1e1e; transition: 0.2s; }
+        .new-post button:hover { background: #FFA000; }
 
-        /* Чаты — мобильная версия (два состояния) */
+        /* ========== ЧАТЫ ========== */
         .chats-layout {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-        .chat-list-view {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .chat-messages-view {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-        .chat-messages-view.active {
-            display: flex;
-        }
-        .chat-list-view.hide {
-            display: none;
-        }
+        .chat-list-view { display: flex; flex-direction: column; height: 100%; }
+        .chat-messages-view { display: none; flex-direction: column; height: 100%; }
+        .chat-messages-view.active { display: flex; }
 
         .create-chat {
             padding: 10px 12px;
@@ -159,10 +151,12 @@
             gap: 8px;
         }
         .create-chat input { flex: 1; background: #2c2c2c; border: none; border-radius: 40px; padding: 10px 12px; color: white; outline: none; font-size: 14px; }
-        .create-chat button { background: #FFB300; border: none; border-radius: 40px; padding: 0 16px; cursor: pointer; font-weight: bold; color: #1e1e1e; font-size: 18px; }
+        .create-chat input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .create-chat button { background: #FFB300; border: none; border-radius: 40px; padding: 0 16px; cursor: pointer; font-weight: bold; color: #1e1e1e; font-size: 18px; transition: 0.2s; }
+        .create-chat button:hover { background: #FFA000; }
 
         .chat-list-scroll { flex: 1; overflow-y: auto; }
-        .chat-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #2c2c2c; }
+        .chat-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #2c2c2c; transition: 0.1s; }
         .chat-item:active { background: #2a2a2a; }
         .chat-name { font-weight: 500; color: #eee; font-size: 15px; }
         .chat-last-msg { font-size: 12px; color: #888; margin-top: 4px; }
@@ -183,6 +177,7 @@
             color: #FFB300;
             display: flex;
             align-items: center;
+            padding: 4px;
         }
         .chat-title { font-weight: bold; color: #eee; font-size: 16px; }
 
@@ -194,7 +189,8 @@
             flex-direction: column;
             gap: 8px;
         }
-        .message-mine { align-self: flex-end; background: #FFB30020; border: 1px solid #FFB300; color: #eee; border-radius: 18px 18px 4px 18px; padding: 8px 12px; max-width: 80%; cursor: pointer; }
+        .message-mine { align-self: flex-end; background: #FFB30020; border: 1px solid #FFB300; color: #eee; border-radius: 18px 18px 4px 18px; padding: 8px 12px; max-width: 80%; cursor: pointer; transition: 0.1s; }
+        .message-mine:hover { background: #FFB30030; }
         .message-other { align-self: flex-start; background: #2c2c2c; color: #eee; border-radius: 18px 18px 18px 4px; padding: 8px 12px; max-width: 80%; }
         .message-text { font-size: 14px; }
         .message-time { font-size: 10px; margin-top: 4px; opacity: 0.7; }
@@ -207,11 +203,40 @@
             background: #1e1e1e;
         }
         .new-message input { flex: 1; padding: 10px; background: #2c2c2c; border: none; border-radius: 40px; color: white; outline: none; font-size: 14px; }
-        .new-message button { background: #FFB300; border: none; border-radius: 40px; padding: 0 18px; cursor: pointer; font-weight: bold; color: #1e1e1e; }
+        .new-message input:focus { background: #333; box-shadow: 0 0 0 2px #FFB300; }
+        .new-message button { background: #FFB300; border: none; border-radius: 40px; padding: 0 18px; cursor: pointer; font-weight: bold; color: #1e1e1e; transition: 0.2s; }
+        .new-message button:hover { background: #FFA000; }
 
-        /* Нижняя навигация (мобильная) */
-        .bottom-nav {
+        /* ========== ДЕСКТОПНАЯ БОКОВАЯ ПАНЕЛЬ ========== */
+        .sidebar-nav {
             display: none;
+            width: 72px;
+            background: #151515;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 0;
+            border-right: 1px solid #2c2c2c;
+        }
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-btn.active { background: #FFB300; color: #1e1e1e; }
+        .nav-btn:hover { background: #3a3a3a; transform: scale(1.05); }
+
+        /* ========== МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ ========== */
+        .bottom-nav {
+            display: flex;
             background: #151515;
             border-top: 1px solid #2c2c2c;
             padding: 8px 0 12px;
@@ -222,13 +247,13 @@
             border: none;
             font-size: 28px;
             cursor: pointer;
-            padding: 8px 24px;
+            padding: 8px 32px;
             color: #888;
             transition: 0.1s;
+            border-radius: 40px;
         }
-        .bottom-nav-btn.active {
-            color: #FFB300;
-        }
+        .bottom-nav-btn.active { color: #FFB300; background: #2a2a2a; }
+        .bottom-nav-btn:active { transform: scale(0.95); }
 
         .empty { text-align: center; color: #aaa; padding: 40px; font-size: 14px; }
 
@@ -241,44 +266,32 @@
         }
         @keyframes floatUp { 0% { opacity: 1; transform: translate(0, 0) scale(0.8); } 100% { opacity: 0; transform: translate(calc(var(--x, 0) * 0.5), -60px) scale(0.5); } }
 
-        /* Десктопная версия (широкий экран) */
+        /* ========== ДЕСКТОПНАЯ ВЕРСИЯ ========== */
         @media (min-width: 768px) {
             .main-container {
                 max-width: 1200px;
                 margin: 20px auto;
                 border-radius: 28px;
                 height: 85vh;
+                flex-direction: row;
                 box-shadow: 0 20px 35px rgba(0,0,0,0.5);
                 border: 1px solid #2c2c2c;
             }
+            .sidebar-nav { display: flex; }
             .bottom-nav { display: none; }
-            .sidebar-nav {
-                display: flex !important;
-                width: 72px;
-                background: #151515;
-                flex-direction: column;
-                align-items: center;
-                gap: 16px;
-                padding: 20px 0;
-                border-right: 1px solid #2c2c2c;
-            }
-            .main-container { flex-direction: row; }
             .content-scroll { flex: 1; }
             .feed-header, .chats-header { position: static; }
             
-            /* На десктопе чаты в два столбца */
             .chats-layout { flex-direction: row; }
             .chat-list-view { width: 280px; border-right: 1px solid #2c2c2c; display: flex !important; }
             .chat-messages-view { display: flex !important; flex: 1; }
-            .chat-messages-view.active { display: flex !important; }
             .chat-header-back { display: none; }
             .back-btn { display: none; }
         }
 
-        /* Мобильная навигация */
+        /* Мобильная версия — скрываем лишнее */
         @media (max-width: 767px) {
             .sidebar-nav { display: none; }
-            .bottom-nav { display: flex; }
         }
     </style>
 </head>
@@ -306,7 +319,6 @@
                 <button id="logout-user" class="logout-user">Выйти</button>
             </div>
 
-            <!-- Жареная лента -->
             <div id="feed-section" class="feed-section active">
                 <div class="feed-header">🔥 Жареная лента</div>
                 <div id="feed-list" class="feed-list"></div>
@@ -316,11 +328,9 @@
                 </div>
             </div>
 
-            <!-- Чаты -->
             <div id="chats-section" class="chats-section">
                 <div class="chats-header">💬 Чаты</div>
                 <div class="chats-layout">
-                    <!-- Список чатов -->
                     <div id="chat-list-view" class="chat-list-view">
                         <div class="create-chat">
                             <input type="email" id="new-chat-email" placeholder="Email для чата">
@@ -328,7 +338,6 @@
                         </div>
                         <div id="chat-list-scroll" class="chat-list-scroll"></div>
                     </div>
-                    <!-- Окно переписки -->
                     <div id="chat-messages-view" class="chat-messages-view">
                         <div class="chat-header-back">
                             <button id="back-to-chats" class="back-btn">←</button>
@@ -341,11 +350,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="no-chat-selected-mobile" class="empty" style="display: none; text-align: center; padding: 40px;">Выберите чат</div>
+                <div id="no-chat-selected-mobile" class="empty" style="display: none;">Выберите чат</div>
             </div>
         </div>
 
-        <!-- Мобильная нижняя навигация -->
         <div class="bottom-nav">
             <button id="mobile-feed-btn" class="bottom-nav-btn active">🔥</button>
             <button id="mobile-chats-btn" class="bottom-nav-btn">💬</button>
@@ -409,9 +417,7 @@
         let unsubscribeChats = null;
         let unsubscribeMessages = null;
         let currentChatId = null;
-        let currentChatOtherEmail = null;
         let isLoginMode = true;
-        let isMobile = window.innerWidth < 768;
 
         function saveLastChatId(chatId) { if (chatId) localStorage.setItem('blin_last_chat', chatId); else localStorage.removeItem('blin_last_chat'); }
         function getLastChatId() { return localStorage.getItem('blin_last_chat'); }
@@ -574,7 +580,6 @@
 
         async function openChat(chatId, otherEmail) {
             currentChatId = chatId;
-            currentChatOtherEmail = otherEmail;
             saveLastChatId(chatId);
             chatTitleHeader.innerText = otherEmail?.split('@')[0] || otherEmail;
             if (unsubscribeMessages) unsubscribeMessages();
@@ -613,75 +618,4 @@
                 if (err.code === 'auth/email-already-in-use') showLoginError('Email уже используется');
                 else if (err.code === 'auth/user-not-found') showLoginError('Пользователь не найден');
                 else if (err.code === 'auth/wrong-password') showLoginError('Неверный пароль');
-                else if (err.code === 'auth/weak-password') showLoginError('Пароль должен быть не менее 6 символов');
-                else showLoginError('Ошибка: ' + err.message);
-            }
-        }
-
-        function switchToFeed() {
-            feedSection.classList.add('active');
-            chatsSection.classList.remove('active');
-            navFeedBtn.classList.add('active');
-            navChatsBtn.classList.remove('active');
-            mobileFeedBtn.classList.add('active');
-            mobileChatsBtn.classList.remove('active');
-            if (window.innerWidth < 768) hideMobileChat();
-        }
-
-        function switchToChats() {
-            feedSection.classList.remove('active');
-            chatsSection.classList.add('active');
-            navFeedBtn.classList.remove('active');
-            navChatsBtn.classList.add('active');
-            mobileFeedBtn.classList.remove('active');
-            mobileChatsBtn.classList.add('active');
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            loginBtn.innerText = isLoginMode ? 'Войти' : 'Зарегистрироваться';
-            toggleBtn.innerHTML = isLoginMode ? 'Нет аккаунта? <span>Зарегистрироваться</span>' : 'Уже есть аккаунт? <span>Войти</span>';
-            loginError.style.display = 'none';
-        });
-
-        loginBtn.addEventListener('click', handleAuth);
-        loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAuth(); });
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                userEmailDisplay.innerText = currentUser.email;
-                loginScreen.style.display = 'none';
-                mainContainer.style.display = 'flex';
-                await setDoc(doc(db, "users", user.uid), { email: user.email, uid: user.uid }, { merge: true });
-                subscribeToFeed();
-                subscribeToChats();
-            } else {
-                currentUser = null;
-                currentChatId = null;
-                saveLastChatId(null);
-                if (unsubscribeFeed) unsubscribeFeed();
-                if (unsubscribeChats) unsubscribeChats();
-                if (unsubscribeMessages) unsubscribeMessages();
-                loginScreen.style.display = 'block';
-                mainContainer.style.display = 'none';
-                loginEmail.value = '';
-                loginPassword.value = '';
-            }
-        });
-
-        navFeedBtn.addEventListener('click', switchToFeed);
-        navChatsBtn.addEventListener('click', switchToChats);
-        mobileFeedBtn.addEventListener('click', switchToFeed);
-        mobileChatsBtn.addEventListener('click', switchToChats);
-        backToChats.addEventListener('click', hideMobileChat);
-
-        sendPostBtn.addEventListener('click', () => addPost(postInput.value));
-        postInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addPost(postInput.value); });
-        sendMessageBtn.addEventListener('click', () => sendMessage(messageInput.value));
-        messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(messageInput.value); });
-        createChatBtn.addEventListener('click', createNewChat);
-        logoutUser.addEventListener('click', () => signOut(auth));
-    </script>
-</body>
-</html>
+                else
